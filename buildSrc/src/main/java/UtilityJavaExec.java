@@ -1,25 +1,11 @@
-/*
- * Copyright 2011 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package org.gradle.api.tasks;
-
 import org.apache.tools.ant.types.Commandline;
 import org.gradle.api.Incubating;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.ConventionTask;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.Optional;
+import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
 import org.gradle.process.CommandLineArgumentProvider;
 import org.gradle.process.JavaExecSpec;
@@ -38,32 +24,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Executes a Java application in a child process.
- * <p>
- * Similar to {@link org.gradle.api.tasks.Exec}, but starts a JVM with the given classpath and application class.
- * </p>
- * <pre class='autoTested'>
- * apply plugin: 'java'
- *
- * task runApp(type: JavaExec) {
- *   classpath = sourceSets.main.runtimeClasspath
- *
- *   main = 'package.Main'
- *
- *   // arguments to pass to the application
- *   args 'appArg1'
- * }
- * </pre>
- * <p>
- * The process can be started in debug mode (see {@link #getDebug()}) in an ad-hoc manner by supplying the `--debug-jvm` switch when invoking the build.
- * <pre>
- * gradle someJavaExecTask --debug-jvm
- * </pre>
+ * This task is mostly copy of Gradle JavaExec task
+ * We avoid using JavaExec tasks due to IDEA-200192:
+ * IDEA makes all JavaExec tasks not up-to-date and attaches debugger making our breakpoints trigger during irrelevant task execution
  */
-public class JavaExec extends ConventionTask implements JavaExecSpec {
+public class UtilityJavaExec extends ConventionTask implements JavaExecSpec {
     private final JavaExecAction javaExecHandleBuilder;
 
-    public JavaExec() {
+    public UtilityJavaExec() {
         javaExecHandleBuilder = getExecActionFactory().newJavaExecAction();
     }
 
@@ -124,7 +92,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec jvmArgs(Iterable<?> arguments) {
+    public UtilityJavaExec jvmArgs(Iterable<?> arguments) {
         javaExecHandleBuilder.jvmArgs(arguments);
         return this;
     }
@@ -132,7 +100,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec jvmArgs(Object... arguments) {
+    public UtilityJavaExec jvmArgs(Object... arguments) {
         javaExecHandleBuilder.jvmArgs(arguments);
         return this;
     }
@@ -154,7 +122,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec systemProperties(Map<String, ?> properties) {
+    public UtilityJavaExec systemProperties(Map<String, ?> properties) {
         javaExecHandleBuilder.systemProperties(properties);
         return this;
     }
@@ -162,7 +130,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec systemProperty(String name, Object value) {
+    public UtilityJavaExec systemProperty(String name, Object value) {
         javaExecHandleBuilder.systemProperty(name, value);
         return this;
     }
@@ -184,7 +152,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec bootstrapClasspath(Object... classpath) {
+    public UtilityJavaExec bootstrapClasspath(Object... classpath) {
         javaExecHandleBuilder.bootstrapClasspath(classpath);
         return this;
     }
@@ -270,7 +238,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec setMain(String mainClassName) {
+    public UtilityJavaExec setMain(String mainClassName) {
         javaExecHandleBuilder.setMain(mainClassName);
         return this;
     }
@@ -301,14 +269,14 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
      */
     @Incubating
     @Option(option = "args", description = "Command line arguments passed to the main class. [INCUBATING]")
-    public JavaExec setArgsString(String args) {
+    public UtilityJavaExec setArgsString(String args) {
         return setArgs(Arrays.asList(Commandline.translateCommandline(args)));
     }
 
     /**
      * {@inheritDoc}
      */
-    public JavaExec setArgs(List<String> applicationArgs) {
+    public UtilityJavaExec setArgs(List<String> applicationArgs) {
         javaExecHandleBuilder.setArgs(applicationArgs);
         return this;
     }
@@ -316,7 +284,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec setArgs(Iterable<?> applicationArgs) {
+    public UtilityJavaExec setArgs(Iterable<?> applicationArgs) {
         javaExecHandleBuilder.setArgs(applicationArgs);
         return this;
     }
@@ -324,7 +292,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec args(Object... args) {
+    public UtilityJavaExec args(Object... args) {
         javaExecHandleBuilder.args(args);
         return this;
     }
@@ -348,7 +316,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec setClasspath(FileCollection classpath) {
+    public UtilityJavaExec setClasspath(FileCollection classpath) {
         javaExecHandleBuilder.setClasspath(classpath);
         return this;
     }
@@ -356,7 +324,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec classpath(Object... paths) {
+    public UtilityJavaExec classpath(Object... paths) {
         javaExecHandleBuilder.classpath(paths);
         return this;
     }
@@ -371,7 +339,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec copyTo(JavaForkOptions options) {
+    public UtilityJavaExec copyTo(JavaForkOptions options) {
         javaExecHandleBuilder.copyTo(options);
         return this;
     }
@@ -401,7 +369,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec executable(Object executable) {
+    public UtilityJavaExec executable(Object executable) {
         javaExecHandleBuilder.executable(executable);
         return this;
     }
@@ -431,7 +399,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec workingDir(Object dir) {
+    public UtilityJavaExec workingDir(Object dir) {
         javaExecHandleBuilder.workingDir(dir);
         return this;
     }
@@ -454,7 +422,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec environment(String name, Object value) {
+    public UtilityJavaExec environment(String name, Object value) {
         javaExecHandleBuilder.environment(name, value);
         return this;
     }
@@ -462,7 +430,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec environment(Map<String, ?> environmentVariables) {
+    public UtilityJavaExec environment(Map<String, ?> environmentVariables) {
         javaExecHandleBuilder.environment(environmentVariables);
         return this;
     }
@@ -470,7 +438,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec copyTo(ProcessForkOptions target) {
+    public UtilityJavaExec copyTo(ProcessForkOptions target) {
         javaExecHandleBuilder.copyTo(target);
         return this;
     }
@@ -478,7 +446,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec setStandardInput(InputStream inputStream) {
+    public UtilityJavaExec setStandardInput(InputStream inputStream) {
         javaExecHandleBuilder.setStandardInput(inputStream);
         return this;
     }
@@ -494,7 +462,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec setStandardOutput(OutputStream outputStream) {
+    public UtilityJavaExec setStandardOutput(OutputStream outputStream) {
         javaExecHandleBuilder.setStandardOutput(outputStream);
         return this;
     }
@@ -510,7 +478,7 @@ public class JavaExec extends ConventionTask implements JavaExecSpec {
     /**
      * {@inheritDoc}
      */
-    public JavaExec setErrorOutput(OutputStream outputStream) {
+    public UtilityJavaExec setErrorOutput(OutputStream outputStream) {
         javaExecHandleBuilder.setErrorOutput(outputStream);
         return this;
     }

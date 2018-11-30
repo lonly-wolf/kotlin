@@ -30,6 +30,7 @@ logger.info("buildSrc kotlin compiler version: " + org.jetbrains.kotlin.config.K
 logger.info("buildSrc stdlib version: " + KotlinVersion.CURRENT)
 
 apply {
+    plugin("java")
     plugin("kotlin")
     plugin("kotlin-sam-with-receiver")
 }
