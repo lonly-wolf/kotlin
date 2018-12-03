@@ -30,23 +30,22 @@ class BooleanLiteralArgumentInspection(
             if (argument.getArgumentName() != null) return
             val argumentExpression = argument.getArgumentExpression() as? KtConstantExpression ?: return
             if (argumentExpression.node.elementType != KtNodeTypes.BOOLEAN_CONSTANT) return
-            if (argumentExpression.analyze().diagnostics.forElement(argumentExpression).any { it.severity == Severity.ERROR }) return
             val call = argument.getStrictParentOfType<KtCallExpression>() ?: return
+            val valueArguments = call.valueArguments
+            if (valueArguments.takeLastWhile { it != argument }.any { !it.isNamed() }) return
+
+            if (argumentExpression.analyze().diagnostics.forElement(argumentExpression).any { it.severity == Severity.ERROR }) return
             if (call.resolveToCall()?.resultingDescriptor?.hasStableParameterNames() != true) return
 
-            val valueArguments = call.valueArguments
             fun hasAnotherUnnamedBoolean() = valueArguments.asSequence().filter { it != argument }.any {
                 !it.isNamed() && (it.getArgumentExpression() as? KtConstantExpression)?.node?.elementType == KtNodeTypes.BOOLEAN_CONSTANT
             }
-            when {
-                valueArguments.takeLastWhile { it != argument }.none { !it.isNamed() } ->
-                    holder.registerProblem(
-                        argument,
-                        "Boolean literal argument without parameter name",
-                        if (reportSingle || hasAnotherUnnamedBoolean()) GENERIC_ERROR_OR_WARNING else INFORMATION,
-                        IntentionWrapper(AddNameToArgumentIntention(), argument.containingKtFile)
-                    )
-            }
+            holder.registerProblem(
+                argument,
+                "Boolean literal argument without parameter name",
+                if (reportSingle || hasAnotherUnnamedBoolean()) GENERIC_ERROR_OR_WARNING else INFORMATION,
+                IntentionWrapper(AddNameToArgumentIntention(), argument.containingKtFile)
+            )
         })
 
     override fun createOptionsPanel(): JComponent? {
