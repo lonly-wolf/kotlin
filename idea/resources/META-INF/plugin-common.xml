@@ -3164,7 +3164,7 @@
     />
 
     <localInspection implementationClass="org.jetbrains.kotlin.idea.inspections.BooleanLiteralArgumentInspection"
-                     displayName="Boolean literal arguments"
+                     displayName="Boolean literal argument without parameter name"
                      groupPath="Kotlin"
                      groupName="Style issues"
                      enabledByDefault="true"

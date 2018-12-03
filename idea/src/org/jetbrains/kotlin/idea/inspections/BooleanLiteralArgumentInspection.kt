@@ -29,16 +29,13 @@ class BooleanLiteralArgumentInspection : AbstractKotlinInspection() {
             val call = argument.getStrictParentOfType<KtCallExpression>() ?: return
             if (call.resolveToCall()?.resultingDescriptor?.hasStableParameterNames() != true) return
 
-            val file = argument.containingKtFile
-            val description = "Boolean literal arguments"
-            val highlightType = GENERIC_ERROR_OR_WARNING
             when {
                 call.valueArguments.takeLastWhile { it != argument }.none { !it.isNamed() } ->
                     holder.registerProblem(
                         argument,
-                        description,
-                        highlightType,
-                        IntentionWrapper(AddNameToArgumentIntention(), file)
+                        "Boolean literal argument without parameter name",
+                        GENERIC_ERROR_OR_WARNING,
+                        IntentionWrapper(AddNameToArgumentIntention(), argument.containingKtFile)
                     )
             }
         })
