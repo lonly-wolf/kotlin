@@ -38,9 +38,8 @@ private fun compactedGradleProjectId(module: Module): String? {
     if (module.isNewMPPModule) {
         // TODO: more robust way to get compilation/sourceSet name
         return module.name.substringAfterLast('_')
-    } else {
-        return module.toModuleGroup().baseModule.name
     }
+    return module.toModuleGroup().baseModule.name
 }
 
 private fun modulesToRunFrom(

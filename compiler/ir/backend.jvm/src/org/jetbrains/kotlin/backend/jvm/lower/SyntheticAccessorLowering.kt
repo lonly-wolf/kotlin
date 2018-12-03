@@ -85,9 +85,8 @@ class SyntheticAccessorLowering(val context: JvmBackendContext) : IrElementTrans
         if (!symbol.isAccessible()) {
             val accessorSymbol = accumMap.getOrPut(symbol, { symbolConverter(symbol) })
             return exprConverter(expression, accessorSymbol)
-        } else {
-            return expression
         }
+        return expression
     }
 
     private fun makeFunctionAccessorSymbol(functionSymbol: IrFunctionSymbol): IrFunctionSymbol = when (functionSymbol) {

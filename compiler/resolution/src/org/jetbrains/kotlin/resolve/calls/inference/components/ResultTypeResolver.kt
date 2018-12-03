@@ -67,9 +67,8 @@ class ResultTypeResolver(
 
         if (isSuitableType(secondCandidate, variableWithConstraints)) {
             return secondCandidate
-        } else {
-            return firstCandidate
         }
+        return firstCandidate
     }
 
     private fun Context.isSuitableType(resultType: UnwrappedType, variableWithConstraints: VariableWithConstraints): Boolean {

@@ -100,17 +100,15 @@ public class FileTreeWalk private constructor(
                 // There is nothing more on the top of the stack, go back
                 state.pop()
                 return gotoNext()
-            } else {
-                // Check that file/directory matches the filter
-                if (file == topState.root || !file.isDirectory || state.size >= maxDepth) {
-                    // Proceed to a root directory or a simple file
-                    return file
-                } else {
-                    // Proceed to a sub-directory
-                    state.push(directoryState(file))
-                    return gotoNext()
-                }
             }
+            // Check that file/directory matches the filter
+            if (file == topState.root || !file.isDirectory || state.size >= maxDepth) {
+                // Proceed to a root directory or a simple file
+                return file
+            }
+            // Proceed to a sub-directory
+            state.push(directoryState(file))
+            return gotoNext()
         }
 
         /** Visiting in bottom-up order */
@@ -144,11 +142,10 @@ public class FileTreeWalk private constructor(
                     // Then visit root
                     rootVisited = true
                     return root
-                } else {
-                    // That's all
-                    onLeave?.invoke(root)
-                    return null
                 }
+                // That's all
+                onLeave?.invoke(root)
+                return null
             }
         }
 
@@ -185,11 +182,10 @@ public class FileTreeWalk private constructor(
                     }
                     // Then visit all files
                     return fileList!![fileIndex++]
-                } else {
-                    // That's all
-                    onLeave?.invoke(root)
-                    return null
                 }
+                // That's all
+                onLeave?.invoke(root)
+                return null
             }
         }
 

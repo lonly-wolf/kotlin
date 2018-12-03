@@ -166,14 +166,13 @@ object KotlinToJVMBytecodeCompiler {
                     return JavacWrapper.getInstance(environment.project).use {
                         it.compile(File(singleModule.getOutputDirectory()))
                     }
-                } else {
-                    projectConfiguration.getNotNull(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY).report(
-                        WARNING,
-                        "A chunk contains multiple modules (${chunk.joinToString { it.getModuleName() }}). " +
-                                "-Xuse-javac option couldn't be used to compile java files"
-                    )
-                    JavacWrapper.getInstance(environment.project).close()
                 }
+                projectConfiguration.getNotNull(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY).report(
+                    WARNING,
+                    "A chunk contains multiple modules (${chunk.joinToString { it.getModuleName() }}). " +
+                            "-Xuse-javac option couldn't be used to compile java files"
+                )
+                JavacWrapper.getInstance(environment.project).close()
             }
 
             return true

@@ -97,9 +97,8 @@ class CoroutineInferenceData {
 
                 // Actually, this is a more general problem about inferring type without constraints (KT-5464)
                 return
-            } else {
-                badCallHappened()
             }
+            badCallHappened()
         }
 
         csBuilder.addSubtypeConstraint(newSubType, newSuperType, ConstraintPositionKind.SPECIAL.position())

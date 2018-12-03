@@ -423,9 +423,8 @@ class KotlinBuilder : ModuleLevelBuilder(BuilderCategory.SOURCE_PROCESSOR) {
         if (compilationErrors) {
             LOG.info("Compiled with errors")
             return ABORT
-        } else {
-            LOG.info("Compiled successfully")
         }
+        LOG.info("Compiled successfully")
 
         val generatedFiles = getGeneratedFiles(context, chunk, environment.outputItemsCollector)
 

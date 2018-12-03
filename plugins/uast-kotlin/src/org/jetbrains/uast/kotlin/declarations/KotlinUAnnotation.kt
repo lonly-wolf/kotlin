@@ -148,8 +148,7 @@ class KotlinUNestedAnnotation private constructor(
         fun tryCreate(original: KtCallExpression, givenParent: UElement?): KotlinUNestedAnnotation? {
             if (classDescriptor(original)?.kind == ClassKind.ANNOTATION_CLASS)
                 return KotlinUNestedAnnotation(original, givenParent)
-            else
-                return null
+            return null
         }
 
         private fun classDescriptor(original: KtCallExpression) =

@@ -112,10 +112,9 @@ class ConstAndJvmFieldPropertiesLowering(val context: CommonBackendContext) : Ir
                 setOrGetExpr.receiver = null
                 +setOrGetExpr
             }
-        } else {
-            // Just `setOrGetExpr` (`dispatchReceiver` is evaluated as a subexpression thereof)
-            return setOrGetExpr
         }
+        // Just `setOrGetExpr` (`dispatchReceiver` is evaluated as a subexpression thereof)
+        return setOrGetExpr
     }
 }
 

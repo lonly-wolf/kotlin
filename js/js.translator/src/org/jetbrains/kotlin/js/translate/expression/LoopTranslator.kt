@@ -194,30 +194,28 @@ fun translateForExpression(expression: KtForExpression, context: TranslationCont
         if (itemValue == null && destructuringParameter == null) {
             return realBody
         }
-        else {
-            val block = JsBlock()
+        val block = JsBlock()
 
-            val currentVarInit =
-                if (destructuringParameter == null) {
-                    val loopParameterDescriptor = (getDescriptorForElement(context.bindingContext(), loopParameter) as CallableDescriptor)
-                    val loopParameterType = loopParameterDescriptor.returnType ?: context.currentModule.builtIns.anyType
-                    val coercedItemValue = itemValue?.let { TranslationUtils.coerce(context, it, loopParameterType) }
-                    newVar(parameterName, coercedItemValue).apply { source = expression.loopRange }
+        val currentVarInit =
+            if (destructuringParameter == null) {
+                val loopParameterDescriptor = (getDescriptorForElement(context.bindingContext(), loopParameter) as CallableDescriptor)
+                val loopParameterType = loopParameterDescriptor.returnType ?: context.currentModule.builtIns.anyType
+                val coercedItemValue = itemValue?.let { TranslationUtils.coerce(context, it, loopParameterType) }
+                newVar(parameterName, coercedItemValue).apply { source = expression.loopRange }
+            }
+            else {
+                val innerBlockContext = context.innerBlock(block)
+                if (itemValue != null) {
+                    val parameterStatement = JsAstUtils.newVar(parameterName, itemValue).apply { source = expression.loopRange }
+                    innerBlockContext.addStatementToCurrentBlock(parameterStatement)
                 }
-                else {
-                    val innerBlockContext = context.innerBlock(block)
-                    if (itemValue != null) {
-                        val parameterStatement = JsAstUtils.newVar(parameterName, itemValue).apply { source = expression.loopRange }
-                        innerBlockContext.addStatementToCurrentBlock(parameterStatement)
-                    }
-                    DestructuringDeclarationTranslator.translate(
-                            destructuringParameter, JsAstUtils.pureFqn(parameterName, null), innerBlockContext)
-                }
-            block.statements += currentVarInit
-            block.statements += if (realBody is JsBlock) realBody.statements else listOfNotNull(realBody)
+                DestructuringDeclarationTranslator.translate(
+                    destructuringParameter, JsAstUtils.pureFqn(parameterName, null), innerBlockContext)
+            }
+        block.statements += currentVarInit
+        block.statements += if (realBody is JsBlock) realBody.statements else listOfNotNull(realBody)
 
-            return block
-        }
+        return block
     }
 
     fun translateForOverLiteralRange(literal: RangeLiteral): JsStatement {

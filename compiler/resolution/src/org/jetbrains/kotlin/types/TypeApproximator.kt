@@ -166,9 +166,8 @@ class TypeApproximator {
                         lowerResult?.lowerIfFlexible() ?: type.lowerBound,
                         upperResult?.upperIfFlexible() ?: type.upperBound
                     )
-                } else {
-                    return type.bound().let { approximateTo(it, conf, depth) ?: it }
                 }
+                return type.bound().let { approximateTo(it, conf, depth) ?: it }
             }
         }
     }

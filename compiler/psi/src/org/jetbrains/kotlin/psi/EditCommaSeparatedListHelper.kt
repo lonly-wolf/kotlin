@@ -43,15 +43,14 @@ object EditCommaSeparatedListHelper {
             } else {
                 list.add(item) as TItem
             }
+        }
+        var comma = KtPsiFactory(list).createComma()
+        return if (anchor != null) {
+            comma = list.addAfter(comma, anchor)
+            list.addAfter(item, comma) as TItem
         } else {
-            var comma = KtPsiFactory(list).createComma()
-            return if (anchor != null) {
-                comma = list.addAfter(comma, anchor)
-                list.addAfter(item, comma) as TItem
-            } else {
-                comma = list.addBefore(comma, allItems.first())
-                list.addBefore(item, comma) as TItem
-            }
+            comma = list.addBefore(comma, allItems.first())
+            list.addBefore(item, comma) as TItem
         }
     }
 

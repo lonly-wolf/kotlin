@@ -190,9 +190,8 @@ class Kapt3ComponentRegistrar : ComponentRegistrar {
                 logger.error("Kapt does not support specifying JAR file outputs. Please specify the classes output directory explicitly.")
                 abortAnalysis()
                 return false
-            } else {
-                classesOutputDir = configuration.get(JVMConfigurationKeys.OUTPUT_DIRECTORY)
             }
+            classesOutputDir = configuration.get(JVMConfigurationKeys.OUTPUT_DIRECTORY)
         }
 
         if (processingClasspath.isEmpty()) {

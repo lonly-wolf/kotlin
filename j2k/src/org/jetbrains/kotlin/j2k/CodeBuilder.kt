@@ -130,12 +130,10 @@ class CodeBuilder(private val topElement: PsiElement?, private var docConverter:
             if (element.createdAt == null) {
                 throw ElementCreationStackTraceRequiredException()
             }
-            else {
-                val s = "Element $element has no prototypes assigned.\n" +
-                        "Use Element.assignPrototype() or Element.assignNoPrototype().\n" +
-                        "Element created at:\n${element.createdAt}"
-                throw RuntimeException(s)
-            }
+            val s = "Element $element has no prototypes assigned.\n" +
+                    "Use Element.assignPrototype() or Element.assignNoPrototype().\n" +
+                    "Element created at:\n${element.createdAt}"
+            throw RuntimeException(s)
         }
 
         if (topElement == null || topElement is PsiCompiledElement || element.prototypes!!.isEmpty()) {

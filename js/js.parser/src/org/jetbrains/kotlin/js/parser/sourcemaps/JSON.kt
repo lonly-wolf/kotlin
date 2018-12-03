@@ -184,12 +184,10 @@ private class JsonParser(val reader: Reader) {
                 advance()
                 break
             }
-            else {
-                if (result.elements.isNotEmpty()) {
-                    expectCharAndAdvance(',')
-                }
-                result.elements += parseNode()
+            if (result.elements.isNotEmpty()) {
+                expectCharAndAdvance(',')
             }
+            result.elements += parseNode()
         }
         return result
     }
@@ -203,22 +201,20 @@ private class JsonParser(val reader: Reader) {
                 advance()
                 break
             }
-            else {
-                if (result.properties.isNotEmpty()) {
-                    expectCharAndAdvance(',')
-                }
-
-                skipSpaces()
-                val key = parseString()
-                if (key in result.properties) {
-                    error("Duplicate property name: $key")
-                }
-
-                skipSpaces()
-                expectCharAndAdvance(':')
-
-                result.properties[key] = parseNode()
+            if (result.properties.isNotEmpty()) {
+                expectCharAndAdvance(',')
             }
+
+            skipSpaces()
+            val key = parseString()
+            if (key in result.properties) {
+                error("Duplicate property name: $key")
+            }
+
+            skipSpaces()
+            expectCharAndAdvance(':')
+
+            result.properties[key] = parseNode()
         }
         return result
     }

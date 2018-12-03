@@ -374,10 +374,9 @@ class CommentSaver(originalElements: PsiChildRange, private val saveLineBreaks: 
                     psiElement = skipTokensForward(psiElement, tokensToMatch.asReversed())
                     psiElement?.restoreLineBreakAfter()
                     break
-                } else {
-                    if (leaf !is TokenTreeElement) break
-                    tokensToMatch.add(leaf.tokenType)
                 }
+                if (leaf !is TokenTreeElement) break
+                tokensToMatch.add(leaf.tokenType)
             }
         }
     }

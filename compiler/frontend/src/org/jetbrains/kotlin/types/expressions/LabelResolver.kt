@@ -169,9 +169,8 @@ object LabelResolver {
                         context.trace.record(REFERENCE_TARGET, referenceExpression, declarationDescriptor)
                     }
                     return LabeledReceiverResolutionResult.labelResolutionSuccess(thisReceiver)
-                } else {
-                    context.trace.report(UNRESOLVED_REFERENCE.on(targetLabel, targetLabel))
                 }
+                context.trace.report(UNRESOLVED_REFERENCE.on(targetLabel, targetLabel))
             }
             else -> BindingContextUtils.reportAmbiguousLabel(context.trace, targetLabel, declarationsByLabel)
         }

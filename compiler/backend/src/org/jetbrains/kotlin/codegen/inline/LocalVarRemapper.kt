@@ -60,9 +60,7 @@ class LocalVarRemapper(private val params: Parameters, private val additionalShi
             if (info.isRemapped) {
                 return RemapInfo(info, remapped, REMAPPED)
             }
-            else {
-                remappedIndex = (remapped as StackValue.Local).index
-            }
+            remappedIndex = (remapped as StackValue.Local).index
         }
         else {
             //captured params are not used directly in this inlined method, they are used in closure

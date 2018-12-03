@@ -122,10 +122,9 @@ private class SequenceBuilderIterator<T> : SequenceScope<T>(), Iterator<T>, Cont
                     if (nextIterator!!.hasNext()) {
                         state = State_ManyReady
                         return true
-                    } else {
-                        nextIterator = null
                     }
-                State_Done -> return false
+                nextIterator = null
+                        State_Done -> return false
                 State_Ready, State_ManyReady -> return true
                 else -> throw exceptionalState()
             }
@@ -156,7 +155,8 @@ private class SequenceBuilderIterator<T> : SequenceScope<T>(), Iterator<T>, Cont
     }
 
     private fun nextNotReady(): T {
-        if (!hasNext()) throw NoSuchElementException() else return next()
+        if (!hasNext()) throw NoSuchElementException()
+        return next()
     }
 
     private fun exceptionalState(): Throwable = when (state) {

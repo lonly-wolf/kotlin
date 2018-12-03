@@ -153,25 +153,24 @@ private class ReturnableBlockTransformer(
                 expression.origin,
                 newStatements
             )
-        } else {
-            loop.body = IrBlockImpl(
-                expression.startOffset,
-                expression.endOffset,
-                context.irBuiltIns.unitType,
-                expression.origin,
-                newStatements
-            )
+        }
+        loop.body = IrBlockImpl(
+            expression.startOffset,
+            expression.endOffset,
+            context.irBuiltIns.unitType,
+            expression.origin,
+            newStatements
+        )
 
-            return IrCompositeImpl(
-                expression.startOffset,
-                expression.endOffset,
-                expression.type,
-                expression.origin
-            ).apply {
-                statements += variable
-                statements += loop
-                statements += JsIrBuilder.buildGetValue(variable.symbol)
-            }
+        return IrCompositeImpl(
+            expression.startOffset,
+            expression.endOffset,
+            expression.type,
+            expression.origin
+        ).apply {
+            statements += variable
+            statements += loop
+            statements += JsIrBuilder.buildGetValue(variable.symbol)
         }
     }
 }

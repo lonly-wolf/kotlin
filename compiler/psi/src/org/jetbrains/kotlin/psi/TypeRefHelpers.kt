@@ -44,14 +44,13 @@ fun setTypeReference(declaration: KtCallableDeclaration, addAfter: PsiElement?, 
             declaration.addAfter(KtPsiFactory(declaration.project).createColon(), anchor)
             newTypeRef
         }
-    } else {
-        if (oldTypeRef != null) {
-            val colon = declaration.colon!!
-            val removeFrom = colon.prevSibling as? PsiWhiteSpace ?: colon
-            declaration.deleteChildRange(removeFrom, oldTypeRef)
-        }
-        return null
     }
+    if (oldTypeRef != null) {
+        val colon = declaration.colon!!
+        val removeFrom = colon.prevSibling as? PsiWhiteSpace ?: colon
+        declaration.deleteChildRange(removeFrom, oldTypeRef)
+    }
+    return null
 }
 
 private inline fun <T : KtElement> T.doSetReceiverTypeReference(
@@ -76,14 +75,13 @@ private inline fun <T : KtElement> T.doSetReceiverTypeReference(
             newTypeRef.add(argList.rightParenthesis!!)
         }
         return newTypeRef
-    } else {
-        if (oldTypeRef != null) {
-            val dotSibling = oldTypeRef.parent as? KtFunctionTypeReceiver ?: oldTypeRef
-            val dot = dotSibling.siblings(forward = true).firstOrNull { it.node.elementType == KtTokens.DOT }
-            deleteChildRange(dotSibling, dot ?: dotSibling)
-        }
-        return null
     }
+    if (oldTypeRef != null) {
+        val dotSibling = oldTypeRef.parent as? KtFunctionTypeReceiver ?: oldTypeRef
+        val dot = dotSibling.siblings(forward = true).firstOrNull { it.node.elementType == KtTokens.DOT }
+        deleteChildRange(dotSibling, dot ?: dotSibling)
+    }
+    return null
 }
 
 fun KtCallableDeclaration.setReceiverTypeReference(typeRef: KtTypeReference?) =

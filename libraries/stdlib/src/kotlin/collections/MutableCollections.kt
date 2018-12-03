@@ -201,9 +201,8 @@ private fun <T> MutableList<T>.filterInPlace(predicate: (T) -> Boolean, predicat
             removeAt(removeIndex)
 
         return true
-    } else {
-        return false
     }
+    return false
 }
 
 /**
@@ -241,8 +240,7 @@ public fun <T> MutableCollection<in T>.retainAll(elements: Iterable<T>): Boolean
 public fun <T> MutableCollection<in T>.retainAll(elements: Array<out T>): Boolean {
     if (elements.isNotEmpty())
         return retainAll(elements.toHashSet())
-    else
-        return retainNothing()
+    return retainNothing()
 }
 
 /**
@@ -252,8 +250,7 @@ public fun <T> MutableCollection<in T>.retainAll(elements: Sequence<T>): Boolean
     val set = elements.toHashSet()
     if (set.isNotEmpty())
         return retainAll(set)
-    else
-        return retainNothing()
+    return retainNothing()
 }
 
 private fun MutableCollection<*>.retainNothing(): Boolean {

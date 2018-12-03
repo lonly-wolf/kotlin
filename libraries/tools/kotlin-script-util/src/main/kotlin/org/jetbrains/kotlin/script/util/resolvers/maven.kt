@@ -66,9 +66,7 @@ class MavenResolver(val reportError: ((String) -> Unit)? = null): Resolver {
             val deps = Aether(currentRepos(), localRepo).resolve( artifactId, JavaScopes.RUNTIME)
             if (deps != null)
                 return deps.map { it.file }
-            else {
-                error("resolving ${artifactId.artifactId} failed: no results")
-            }
+            error("resolving ${artifactId.artifactId} failed: no results")
         }
         catch (e: DependencyResolutionException) {
             reportError?.invoke("resolving ${artifactId.artifactId} failed: $e") ?: throw e

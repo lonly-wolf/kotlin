@@ -423,9 +423,7 @@ class MethodInliner(
                         if (`var` < capturedParamsSize) {
                             return `var` + realParametersSize
                         }
-                        else {
-                            return `var` - capturedParamsSize
-                        }
+                        return `var` - capturedParamsSize
                     }
                     return `var`
                 }

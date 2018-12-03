@@ -64,8 +64,7 @@ val FunctionDescriptor.deserializedPropertyIfAccessor: DeserializedCallableMembe
         val member = this.propertyIfAccessor
         if (member is DeserializedCallableMemberDescriptor)
             return member
-        else
-            error("Unexpected deserializable callable descriptor")
+        error("Unexpected deserializable callable descriptor")
     }
 
 val CallableMemberDescriptor.isDeserializableCallable

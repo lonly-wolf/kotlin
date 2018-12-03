@@ -131,9 +131,8 @@ internal class GradleKotlinCompilerWork @Inject constructor(
 
             if (daemonExitCode != null) {
                 return daemonExitCode
-            } else {
-                log.warn("Could not connect to kotlin daemon. Using fallback strategy.")
             }
+            log.warn("Could not connect to kotlin daemon. Using fallback strategy.")
         }
 
         val isGradleDaemonUsed = System.getProperty("org.gradle.daemon")?.let(String::toBoolean)

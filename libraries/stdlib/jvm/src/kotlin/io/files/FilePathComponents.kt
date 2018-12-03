@@ -36,8 +36,7 @@ private fun String.getRootLength(): Int {
                 first = indexOf(File.separatorChar, first + 1)
                 if (first >= 0)
                     return first + 1
-                else
-                    return length
+                return length
             }
         }
         return 1

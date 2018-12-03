@@ -148,11 +148,9 @@ class ReifiedTypeInliner(private val parametersMapping: TypeParameterMappings?, 
 
             return null
         }
-        else {
-            val newReificationArgument = reificationArgument.combine(mapping.reificationArgument!!)
-            instructions.set(insn.previous!!, LdcInsnNode(newReificationArgument.asString()))
-            return mapping.reificationArgument.parameterName
-        }
+        val newReificationArgument = reificationArgument.combine(mapping.reificationArgument!!)
+        instructions.set(insn.previous!!, LdcInsnNode(newReificationArgument.asString()))
+        return mapping.reificationArgument.parameterName
     }
 
     private fun processNewArray(insn: MethodInsnNode, parameter: Type) =

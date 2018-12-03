@@ -58,9 +58,8 @@ internal object DefaultJsAsserter : Asserter {
     override fun assertTrue(lazyMessage: () -> String?, actual: Boolean) {
         if (!actual) {
             failWithMessage(lazyMessage)
-        } else {
-            invokeHook(true, lazyMessage)
         }
+        invokeHook(true, lazyMessage)
     }
 
     override fun assertTrue(message: String?, actual: Boolean) {
@@ -76,8 +75,7 @@ internal object DefaultJsAsserter : Asserter {
         invokeHook(false) { message }
         if (message == null)
             throw AssertionError()
-        else
-            throw AssertionError(message)
+        throw AssertionError(message)
     }
 
     private fun invokeHook(result: Boolean, lazyMessage: () -> String?) {

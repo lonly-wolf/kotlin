@@ -103,10 +103,9 @@ class ConstantExpressionEvaluator(
             if (parameterDescriptor.declaresDefaultValue() && compileTimeConstants.isEmpty()) return null
 
             return ConstantValueFactory.createArrayValue(constants, parameterDescriptor.type)
-        } else {
-            // we should actually get only one element, but just in case of getting many, we take the last one
-            return constants.lastOrNull()
         }
+        // we should actually get only one element, but just in case of getting many, we take the last one
+        return constants.lastOrNull()
     }
 
     private fun isArrayPassedInNamedForm(constants: List<ConstantValue<Any?>>, resolvedArgument: ResolvedValueArgument): Boolean {
@@ -471,12 +470,11 @@ private class ConstantExpressionEvaluatorVisitor(
             if (constant == null) {
                 interupted = true
                 break
-            } else {
-                if (!constant.canBeUsedInAnnotations) canBeUsedInAnnotation = false
-                if (constant.usesVariableAsConstant) usesVariableAsConstant = true
-                if (constant.usesNonConstValAsConstant) usesNonConstantVariableAsConstant = true
-                sb.append(constant.constantValue.value)
             }
+            if (!constant.canBeUsedInAnnotations) canBeUsedInAnnotation = false
+            if (constant.usesVariableAsConstant) usesVariableAsConstant = true
+            if (constant.usesNonConstValAsConstant) usesNonConstantVariableAsConstant = true
+            sb.append(constant.constantValue.value)
         }
         return if (!interupted)
             createConstant(
@@ -556,9 +554,8 @@ private class ConstantExpressionEvaluatorVisitor(
                     isConvertableConstVal = false
                 )
             )
-        } else {
-            return evaluateCall(expression.operationReference, leftExpression, expectedType)
         }
+        return evaluateCall(expression.operationReference, leftExpression, expectedType)
     }
 
     override fun visitCollectionLiteralExpression(

@@ -280,9 +280,8 @@ class AndroidSubplugin : KotlinGradleSubplugin<KotlinCompile> {
             )
 
             return ""
-        } else {
-            return applicationPackage
         }
+        return applicationPackage
     }
 
     private fun getApplicationPackageFromManifest(manifestFile: File): String? {

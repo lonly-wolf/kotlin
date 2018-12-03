@@ -122,13 +122,12 @@ class LoopExpressionGenerator(statementGenerator: StatementGenerator) : Statemen
             }
             if (targetLabel == null) {
                 return getLoop(finger) ?: continue
-            } else {
-                val parent = finger.parent
-                if (parent is KtLabeledExpression) {
-                    val label = parent.getLabelName()!!
-                    if (targetLabel == label) {
-                        return getLoop(finger) ?: continue
-                    }
+            }
+            val parent = finger.parent
+            if (parent is KtLabeledExpression) {
+                val label = parent.getLabelName()!!
+                if (targetLabel == label) {
+                    return getLoop(finger) ?: continue
                 }
             }
         }

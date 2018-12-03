@@ -145,9 +145,8 @@ public fun File.forEachBlock(blockSize: Int, action: (buffer: ByteArray, bytesRe
             val size = input.read(arr)
             if (size <= 0) {
                 break
-            } else {
-                action(arr, size)
             }
+            action(arr, size)
         } while (true)
     }
 }

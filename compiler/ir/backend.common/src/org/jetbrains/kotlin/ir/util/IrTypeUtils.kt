@@ -85,7 +85,8 @@ fun IrType.isThrowable(): Boolean {
         if (classClassifier.owner.name.asString() != "Throwable") return false
         val parent = classClassifier.owner.parent as? IrPackageFragment ?: return false
         return parent.fqName == kotlinPackageFqn
-    } else return false
+    }
+    return false
 }
 
 fun IrType.isThrowableTypeOrSubtype() = DFS.ifAny(listOf(this), IrType::superTypes, IrType::isThrowable)

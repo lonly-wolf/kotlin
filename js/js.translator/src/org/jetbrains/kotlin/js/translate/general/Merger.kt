@@ -101,9 +101,7 @@ class Merger(private val rootFunction: JsFunction, val internalModuleName: JsNam
                     nameMap[localName] = exportedPackages[exportedPackage]!!
                     continue
                 }
-                else {
-                    exportedPackages[exportedPackage] = localName
-                }
+                exportedPackages[exportedPackage] = localName
             }
             else if (statement is JsExpressionStatement) {
                 val exportedTag = statement.exportedTag

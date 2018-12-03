@@ -365,9 +365,8 @@ private class IrUnboundSymbolReplacer(
             } finally {
                 returnTargetStack.pop()
             }
-        } else {
-            return super.visitBlock(expression)
         }
+        return super.visitBlock(expression)
     }
 
     override fun visitReturn(expression: IrReturn): IrExpression {

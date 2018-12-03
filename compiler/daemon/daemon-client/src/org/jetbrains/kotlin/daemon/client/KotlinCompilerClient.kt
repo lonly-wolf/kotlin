@@ -247,8 +247,7 @@ object KotlinCompilerClient {
             }
             if (compilerId.compilerClasspath.none())
                 throw IllegalArgumentException("Cannot find compiler jar")
-            else
-                println("desired compiler classpath: " + compilerId.compilerClasspath.joinToString(File.pathSeparator))
+            println("desired compiler classpath: " + compilerId.compilerClasspath.joinToString(File.pathSeparator))
         }
 
         val daemon = connectToCompileService(compilerId, daemonLaunchingOptions, daemonOptions, DaemonReportingTargets(out = System.out), autostart = !clientOptions.stop, checkId = !clientOptions.stop)
@@ -396,9 +395,7 @@ object KotlinCompilerClient {
                                         isEchoRead.release()
                                         return@forEachLine
                                     }
-                                    else {
-                                        reportingTargets.report(DaemonReportCategory.INFO, it, "daemon")
-                                    }
+                                    reportingTargets.report(DaemonReportCategory.INFO, it, "daemon")
                                 }
                     }
                     finally {
@@ -433,9 +430,8 @@ object KotlinCompilerClient {
                     else -> true
                 }
             }
-            else
             // without startEcho defined waiting for max timeout
-                Thread.sleep(daemonStartupTimeout)
+            Thread.sleep(daemonStartupTimeout)
             return true
         }
         finally {

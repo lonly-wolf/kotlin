@@ -72,21 +72,19 @@ class JDIEval(
                     listOf(vm.mirrorOf(classType.internalName.replace('/', '.')).asValue())
             )
         }
-        else {
-            return invokeStaticMethod(
-                    MethodDescription(
-                            CLASS.internalName,
-                            "forName",
-                            "(Ljava/lang/String;ZLjava/lang/ClassLoader;)Ljava/lang/Class;",
-                            true
-                    ),
-                    listOf(
-                            vm.mirrorOf(classType.internalName.replace('/', '.')).asValue(),
-                            boolean(true),
-                            classLoader.asValue()
-                    )
+        return invokeStaticMethod(
+            MethodDescription(
+                CLASS.internalName,
+                "forName",
+                "(Ljava/lang/String;ZLjava/lang/ClassLoader;)Ljava/lang/Class;",
+                true
+            ),
+            listOf(
+                vm.mirrorOf(classType.internalName.replace('/', '.')).asValue(),
+                boolean(true),
+                classLoader.asValue()
             )
-        }
+        )
     }
 
     fun loadClassByName(name: String, classLoader: ClassLoaderReference): jdi_Type {
@@ -491,9 +489,7 @@ private fun <T> JdiOperationResult<T>.ifFail(lazyMessage: () -> String): T {
             if (cause is IllegalArgumentException) {
                 throwBrokenCodeException(IllegalArgumentException(lazyMessage(), this.cause))
             }
-            else {
-                throwBrokenCodeException(IllegalStateException(lazyMessage(), this.cause))
-            }
+            throwBrokenCodeException(IllegalStateException(lazyMessage(), this.cause))
         }
     }
 }

@@ -292,11 +292,10 @@ class MemberBuilder(
                 }
 
                 return parameters
-            } else {
-                // substituted T is no longer a parameter
-                val renderedT = primaryTypeParameter.renderType()
-                return parameters.filterNot { it.name == renderedT }
             }
+            // substituted T is no longer a parameter
+            val renderedT = primaryTypeParameter.renderType()
+            return parameters.filterNot { it.name == renderedT }
         }
 
 

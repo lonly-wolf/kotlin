@@ -98,10 +98,9 @@ class MultipleCatchesLowering(val context: JsIrBackendContext) : FileLoweringPas
                     if (type is IrDynamicType) {
                         branches += IrElseBranchImpl(catch.startOffset, catch.endOffset, litTrue, catchBody)
                         break
-                    } else {
-                        val typeCheck = buildIsCheck(pendingException(), type, typeSymbol!!)
-                        branches += IrBranchImpl(catch.startOffset, catch.endOffset, typeCheck, catchBody)
                     }
+                    val typeCheck = buildIsCheck(pendingException(), type, typeSymbol!!)
+                    branches += IrBranchImpl(catch.startOffset, catch.endOffset, typeCheck, catchBody)
                 }
 
 

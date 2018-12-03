@@ -249,12 +249,10 @@ class SerializableCodegenImpl(
             invokespecial(superType, "<init>", desc, false)
             return 0 to propStartVar
         }
-        else {
-            val superProps = SerializableProperties(superClass, classCodegen.bindingContext).serializableProperties
-            val creator = buildInternalConstructorDesc(propStartVar, 1, classCodegen, superProps)
-            invokespecial(superType, "<init>", creator, false)
-            return superProps.size to propStartVar + superProps.sumBy { it.asmType.size }
-        }
+        val superProps = SerializableProperties(superClass, classCodegen.bindingContext).serializableProperties
+        val creator = buildInternalConstructorDesc(propStartVar, 1, classCodegen, superProps)
+        invokespecial(superType, "<init>", creator, false)
+        return superProps.size to propStartVar + superProps.sumBy { it.asmType.size }
     }
 
     private fun needInitProperty(prop: SerializableProperty) = getProp(prop)?.let { classCodegen.shouldInitializeProperty(it) }

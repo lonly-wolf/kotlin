@@ -63,10 +63,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JvmProtoBuf.packageLocalVariable) != new.getExtensionCount(JvmProtoBuf.packageLocalVariable)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JvmProtoBuf.packageLocalVariable) - 1) {
-                if (!checkEquals(old.getExtension(JvmProtoBuf.packageLocalVariable, i), new.getExtension(JvmProtoBuf.packageLocalVariable, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JvmProtoBuf.packageLocalVariable) - 1) {
+            if (!checkEquals(old.getExtension(JvmProtoBuf.packageLocalVariable, i), new.getExtension(JvmProtoBuf.packageLocalVariable, i))) return false
         }
 
         if (old.hasExtension(JsProtoBuf.packageFqName) != new.hasExtension(JsProtoBuf.packageFqName)) return false
@@ -192,10 +190,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JvmProtoBuf.classLocalVariable) != new.getExtensionCount(JvmProtoBuf.classLocalVariable)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JvmProtoBuf.classLocalVariable) - 1) {
-                if (!checkEquals(old.getExtension(JvmProtoBuf.classLocalVariable, i), new.getExtension(JvmProtoBuf.classLocalVariable, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JvmProtoBuf.classLocalVariable) - 1) {
+            if (!checkEquals(old.getExtension(JvmProtoBuf.classLocalVariable, i), new.getExtension(JvmProtoBuf.classLocalVariable, i))) return false
         }
 
         if (old.hasExtension(JvmProtoBuf.anonymousObjectOriginName) != new.hasExtension(JvmProtoBuf.anonymousObjectOriginName)) return false
@@ -206,10 +202,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JsProtoBuf.classAnnotation) != new.getExtensionCount(JsProtoBuf.classAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.classAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.classAnnotation, i), new.getExtension(JsProtoBuf.classAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.classAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.classAnnotation, i), new.getExtension(JsProtoBuf.classAnnotation, i))) return false
         }
 
         if (old.hasExtension(JsProtoBuf.classContainingFileId) != new.hasExtension(JsProtoBuf.classContainingFileId)) return false
@@ -225,10 +219,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(BuiltInsProtoBuf.classAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.classAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.classAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.classAnnotation, i), new.getExtension(BuiltInsProtoBuf.classAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.classAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.classAnnotation, i), new.getExtension(BuiltInsProtoBuf.classAnnotation, i))) return false
         }
 
         return true
@@ -418,10 +410,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JsProtoBuf.functionAnnotation) != new.getExtensionCount(JsProtoBuf.functionAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.functionAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.functionAnnotation, i), new.getExtension(JsProtoBuf.functionAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.functionAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.functionAnnotation, i), new.getExtension(JsProtoBuf.functionAnnotation, i))) return false
         }
 
         if (old.hasExtension(JsProtoBuf.functionContainingFileId) != new.hasExtension(JsProtoBuf.functionContainingFileId)) return false
@@ -442,10 +432,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(BuiltInsProtoBuf.functionAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.functionAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.functionAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.functionAnnotation, i), new.getExtension(BuiltInsProtoBuf.functionAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.functionAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.functionAnnotation, i), new.getExtension(BuiltInsProtoBuf.functionAnnotation, i))) return false
         }
 
         return true
@@ -516,28 +504,22 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JsProtoBuf.propertyAnnotation) != new.getExtensionCount(JsProtoBuf.propertyAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.propertyAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.propertyAnnotation, i), new.getExtension(JsProtoBuf.propertyAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.propertyAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.propertyAnnotation, i), new.getExtension(JsProtoBuf.propertyAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(JsProtoBuf.propertyGetterAnnotation) != new.getExtensionCount(JsProtoBuf.propertyGetterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.propertyGetterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.propertyGetterAnnotation, i), new.getExtension(JsProtoBuf.propertyGetterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.propertyGetterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.propertyGetterAnnotation, i), new.getExtension(JsProtoBuf.propertyGetterAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(JsProtoBuf.propertySetterAnnotation) != new.getExtensionCount(JsProtoBuf.propertySetterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.propertySetterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.propertySetterAnnotation, i), new.getExtension(JsProtoBuf.propertySetterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.propertySetterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.propertySetterAnnotation, i), new.getExtension(JsProtoBuf.propertySetterAnnotation, i))) return false
         }
 
         if (old.hasExtension(JsProtoBuf.compileTimeValue) != new.hasExtension(JsProtoBuf.compileTimeValue)) return false
@@ -563,28 +545,22 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(BuiltInsProtoBuf.propertyAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.propertyAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.propertyAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.propertyAnnotation, i), new.getExtension(BuiltInsProtoBuf.propertyAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.propertyAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.propertyAnnotation, i), new.getExtension(BuiltInsProtoBuf.propertyAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(BuiltInsProtoBuf.propertyGetterAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.propertyGetterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.propertyGetterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.propertyGetterAnnotation, i), new.getExtension(BuiltInsProtoBuf.propertyGetterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.propertyGetterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.propertyGetterAnnotation, i), new.getExtension(BuiltInsProtoBuf.propertyGetterAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(BuiltInsProtoBuf.propertySetterAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.propertySetterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.propertySetterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.propertySetterAnnotation, i), new.getExtension(BuiltInsProtoBuf.propertySetterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.propertySetterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.propertySetterAnnotation, i), new.getExtension(BuiltInsProtoBuf.propertySetterAnnotation, i))) return false
         }
 
         if (old.hasExtension(BuiltInsProtoBuf.compileTimeValue) != new.hasExtension(BuiltInsProtoBuf.compileTimeValue)) return false
@@ -671,28 +647,22 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JvmProtoBuf.typeParameterAnnotation) != new.getExtensionCount(JvmProtoBuf.typeParameterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JvmProtoBuf.typeParameterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JvmProtoBuf.typeParameterAnnotation, i), new.getExtension(JvmProtoBuf.typeParameterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JvmProtoBuf.typeParameterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JvmProtoBuf.typeParameterAnnotation, i), new.getExtension(JvmProtoBuf.typeParameterAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(JsProtoBuf.typeParameterAnnotation) != new.getExtensionCount(JsProtoBuf.typeParameterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.typeParameterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.typeParameterAnnotation, i), new.getExtension(JsProtoBuf.typeParameterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.typeParameterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.typeParameterAnnotation, i), new.getExtension(JsProtoBuf.typeParameterAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(BuiltInsProtoBuf.typeParameterAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.typeParameterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.typeParameterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.typeParameterAnnotation, i), new.getExtension(BuiltInsProtoBuf.typeParameterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.typeParameterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.typeParameterAnnotation, i), new.getExtension(BuiltInsProtoBuf.typeParameterAnnotation, i))) return false
         }
 
         return true
@@ -769,10 +739,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JvmProtoBuf.typeAnnotation) != new.getExtensionCount(JvmProtoBuf.typeAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JvmProtoBuf.typeAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JvmProtoBuf.typeAnnotation, i), new.getExtension(JvmProtoBuf.typeAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JvmProtoBuf.typeAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JvmProtoBuf.typeAnnotation, i), new.getExtension(JvmProtoBuf.typeAnnotation, i))) return false
         }
 
         if (old.hasExtension(JvmProtoBuf.isRaw) != new.hasExtension(JvmProtoBuf.isRaw)) return false
@@ -783,19 +751,15 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JsProtoBuf.typeAnnotation) != new.getExtensionCount(JsProtoBuf.typeAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.typeAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.typeAnnotation, i), new.getExtension(JsProtoBuf.typeAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.typeAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.typeAnnotation, i), new.getExtension(JsProtoBuf.typeAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(BuiltInsProtoBuf.typeAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.typeAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.typeAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.typeAnnotation, i), new.getExtension(BuiltInsProtoBuf.typeAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.typeAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.typeAnnotation, i), new.getExtension(BuiltInsProtoBuf.typeAnnotation, i))) return false
         }
 
         return true
@@ -819,10 +783,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JsProtoBuf.constructorAnnotation) != new.getExtensionCount(JsProtoBuf.constructorAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.constructorAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.constructorAnnotation, i), new.getExtension(JsProtoBuf.constructorAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.constructorAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.constructorAnnotation, i), new.getExtension(JsProtoBuf.constructorAnnotation, i))) return false
         }
 
         if (old.hasExtension(JavaClassProtoBuf.isPackagePrivateConstructor) != new.hasExtension(JavaClassProtoBuf.isPackagePrivateConstructor)) return false
@@ -833,10 +795,8 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(BuiltInsProtoBuf.constructorAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.constructorAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.constructorAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.constructorAnnotation, i), new.getExtension(BuiltInsProtoBuf.constructorAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.constructorAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.constructorAnnotation, i), new.getExtension(BuiltInsProtoBuf.constructorAnnotation, i))) return false
         }
 
         return true
@@ -851,19 +811,15 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JsProtoBuf.enumEntryAnnotation) != new.getExtensionCount(JsProtoBuf.enumEntryAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.enumEntryAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.enumEntryAnnotation, i), new.getExtension(JsProtoBuf.enumEntryAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.enumEntryAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.enumEntryAnnotation, i), new.getExtension(JsProtoBuf.enumEntryAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(BuiltInsProtoBuf.enumEntryAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.enumEntryAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.enumEntryAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.enumEntryAnnotation, i), new.getExtension(BuiltInsProtoBuf.enumEntryAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.enumEntryAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.enumEntryAnnotation, i), new.getExtension(BuiltInsProtoBuf.enumEntryAnnotation, i))) return false
         }
 
         return true
@@ -908,19 +864,15 @@ open class ProtoCompareGenerated(val oldNameResolver: NameResolver, val newNameR
         if (old.getExtensionCount(JsProtoBuf.parameterAnnotation) != new.getExtensionCount(JsProtoBuf.parameterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(JsProtoBuf.parameterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(JsProtoBuf.parameterAnnotation, i), new.getExtension(JsProtoBuf.parameterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(JsProtoBuf.parameterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(JsProtoBuf.parameterAnnotation, i), new.getExtension(JsProtoBuf.parameterAnnotation, i))) return false
         }
 
         if (old.getExtensionCount(BuiltInsProtoBuf.parameterAnnotation) != new.getExtensionCount(BuiltInsProtoBuf.parameterAnnotation)) {
             return false
         }
-        else {
-            for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.parameterAnnotation) - 1) {
-                if (!checkEquals(old.getExtension(BuiltInsProtoBuf.parameterAnnotation, i), new.getExtension(BuiltInsProtoBuf.parameterAnnotation, i))) return false
-            }
+        for(i in 0..old.getExtensionCount(BuiltInsProtoBuf.parameterAnnotation) - 1) {
+            if (!checkEquals(old.getExtension(BuiltInsProtoBuf.parameterAnnotation, i), new.getExtension(BuiltInsProtoBuf.parameterAnnotation, i))) return false
         }
 
         return true

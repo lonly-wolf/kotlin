@@ -159,9 +159,7 @@ private fun translateFunctionCall(
         context.currentBlock.statements += statement
         return context.createCoroutineResult(resolvedCall)
     }
-    else {
-        callExpression = callInfo.constructSafeCallIfNeeded(callExpression)
-    }
+    callExpression = callInfo.constructSafeCallIfNeeded(callExpression)
 
     callExpression.type = resolvedCall.getReturnType().let { if (resolvedCall.call.isSafeCall()) it.makeNullable() else it }
     mayBeMarkByRangeMetadata(resolvedCall, callExpression)

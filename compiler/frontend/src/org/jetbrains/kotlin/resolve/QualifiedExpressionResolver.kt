@@ -244,9 +244,8 @@ class QualifiedExpressionResolver {
             }
 
             return AllUnderImportScope(packageOrClassDescriptor, excludedImportNames)
-        } else {
-            return processSingleImport(moduleDescriptor, trace, importDirective, path, lastPart, packageFragmentForCheck)
         }
+        return processSingleImport(moduleDescriptor, trace, importDirective, path, lastPart, packageFragmentForCheck)
     }
 
     private fun computePackageFragmentToCheck(

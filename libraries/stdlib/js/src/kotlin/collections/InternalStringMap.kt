@@ -52,10 +52,9 @@ internal class InternalStringMap<K, V>(override val equality: EqualityComparator
             size++
 //            structureChanged(host)
             return null
-        } else {
-//            valueMod++
-            return oldValue.unsafeCast<V>()
         }
+        //            valueMod++
+        return oldValue.unsafeCast<V>()
     }
 
     override fun remove(key: K): V? {
@@ -66,10 +65,9 @@ internal class InternalStringMap<K, V>(override val equality: EqualityComparator
             size--
 //            structureChanged(host)
             return value.unsafeCast<V>()
-        } else {
-//            valueMod++
-            return null
         }
+        //            valueMod++
+        return null
     }
 
 

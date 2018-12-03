@@ -446,47 +446,46 @@ interface IrBuilderExtension {
         }
         if (serializerClassOriginal.kind == ClassKind.OBJECT) {
             return irGetObject(serializerClassOriginal)
-        } else {
-            var serializerClass = serializerClassOriginal
-            var args: List<IrExpression> = when (serializerClassOriginal.classId) {
-                contextSerializerId -> listOf(classReference(kType))
-                enumSerializerId -> {
-                    serializerClass = serializableDescriptor.getClassFromInternalSerializationPackage("CommonEnumSerializer")
-                    kType.toClassDescriptor!!.let { enumDesc ->
-                        listOf(
-                            irString(enumDesc.name.toString()),
-                            irCall(findEnumValuesMethod(enumDesc)),
-                            createArrayOfExpression(
-                                compilerContext.irBuiltIns.stringType,
-                                getEnumMembersNames(enumDesc).map { irString(it) }.toList()
-                            )
-                        )
-                    }
-                }
-                else -> kType.arguments.map {
-                    val argSer = enclosingGenerator.findTypeSerializerOrContext(module, it.type, sourceElement = serializerClassOriginal.findPsi())
-                    val expr = serializerInstance(enclosingGenerator, serializableDescriptor, argSer, module, it.type, it.type.genericIndex)
-                        ?: return null
-                    if (it.type.isMarkedNullable) irInvoke(null, nullableSerClass.constructors.toList()[0], expr) else expr
-                }
-            }
-            if (serializerClassOriginal.classId == referenceArraySerializerId)
-                args = listOf(classReference(kType.arguments[0].type)) + args
-
-            val serializable = getSerializableClassDescriptorBySerializer(serializerClass)
-            val ctor = if (serializable?.declaredTypeParameters?.isNotEmpty() == true) {
-                requireNotNull(
-                    KSerializerDescriptorResolver.findSerializerConstructorForTypeArgumentsSerializers(serializerClass)
-                ) { "Generated serializer does not have constructor with required number of arguments" }
-                    .let { compilerContext.externalSymbols.referenceConstructor(it) }
-            } else {
-                compilerContext.externalSymbols.referenceConstructor(serializerClass.unsubstitutedPrimaryConstructor!!)
-            }
-            return irInvoke(
-                null,
-                ctor,
-                *args.toTypedArray()
-            )
         }
+        var serializerClass = serializerClassOriginal
+        var args: List<IrExpression> = when (serializerClassOriginal.classId) {
+            contextSerializerId -> listOf(classReference(kType))
+            enumSerializerId -> {
+                serializerClass = serializableDescriptor.getClassFromInternalSerializationPackage("CommonEnumSerializer")
+                kType.toClassDescriptor!!.let { enumDesc ->
+                    listOf(
+                        irString(enumDesc.name.toString()),
+                        irCall(findEnumValuesMethod(enumDesc)),
+                        createArrayOfExpression(
+                            compilerContext.irBuiltIns.stringType,
+                            getEnumMembersNames(enumDesc).map { irString(it) }.toList()
+                        )
+                    )
+                }
+            }
+            else -> kType.arguments.map {
+                val argSer = enclosingGenerator.findTypeSerializerOrContext(module, it.type, sourceElement = serializerClassOriginal.findPsi())
+                val expr = serializerInstance(enclosingGenerator, serializableDescriptor, argSer, module, it.type, it.type.genericIndex)
+                    ?: return null
+                if (it.type.isMarkedNullable) irInvoke(null, nullableSerClass.constructors.toList()[0], expr) else expr
+            }
+        }
+        if (serializerClassOriginal.classId == referenceArraySerializerId)
+            args = listOf(classReference(kType.arguments[0].type)) + args
+
+        val serializable = getSerializableClassDescriptorBySerializer(serializerClass)
+        val ctor = if (serializable?.declaredTypeParameters?.isNotEmpty() == true) {
+            requireNotNull(
+                KSerializerDescriptorResolver.findSerializerConstructorForTypeArgumentsSerializers(serializerClass)
+            ) { "Generated serializer does not have constructor with required number of arguments" }
+                .let { compilerContext.externalSymbols.referenceConstructor(it) }
+        } else {
+            compilerContext.externalSymbols.referenceConstructor(serializerClass.unsubstitutedPrimaryConstructor!!)
+        }
+        return irInvoke(
+            null,
+            ctor,
+            *args.toTypedArray()
+        )
     }
 }

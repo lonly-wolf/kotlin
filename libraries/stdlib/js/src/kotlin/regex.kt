@@ -88,8 +88,7 @@ public actual class Regex actual constructor(pattern: String, options: Set<Regex
     public actual fun matchEntire(input: CharSequence): MatchResult? {
         if (pattern.startsWith('^') && pattern.endsWith('$'))
             return find(input)
-        else
-            return Regex("^${pattern.trimStart('^').trimEnd('$')}$", options).find(input)
+        return Regex("^${pattern.trimStart('^').trimEnd('$')}$", options).find(input)
     }
 
     /**

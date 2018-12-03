@@ -44,9 +44,8 @@ interface InnerClassConsumer {
 
                 classDescriptorImpl.initialize(MemberScope.Empty, emptySet(), null)
                 return classDescriptorImpl
-            } else {
-                return if (DescriptorUtils.isTopLevelDeclaration(descriptor)) null else descriptor
             }
+            return if (DescriptorUtils.isTopLevelDeclaration(descriptor)) null else descriptor
         }
     }
 }

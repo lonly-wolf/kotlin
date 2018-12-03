@@ -61,20 +61,18 @@ class FieldToPropertyProcessing(
             if (qualifier != null && !useFieldReference) {
                 return QualifiedExpression(codeConverter.convertExpression(qualifier), identifier, expression.dot())
             }
-            else {
-                // check if field name is shadowed
-                val elementFactory = PsiElementFactory.SERVICE.getInstance(expression.project)
-                val refExpr = try {
-                    elementFactory.createExpressionFromText(identifier.name, expression) as? PsiReferenceExpression ?: return identifier
-                }
-                catch(e: IncorrectOperationException) {
-                    return identifier
-                }
-                return if (refExpr.resolve() == null)
-                    identifier
-                else
-                    QualifiedExpression(ThisExpression(Identifier.Empty).assignNoPrototype(), identifier, null) //TODO: this is not correct in case of nested/anonymous classes
+            // check if field name is shadowed
+            val elementFactory = PsiElementFactory.SERVICE.getInstance(expression.project)
+            val refExpr = try {
+                elementFactory.createExpressionFromText(identifier.name, expression) as? PsiReferenceExpression ?: return identifier
             }
+            catch(e: IncorrectOperationException) {
+                return identifier
+            }
+            return if (refExpr.resolve() == null)
+                identifier
+            else
+                QualifiedExpression(ThisExpression(Identifier.Empty).assignNoPrototype(), identifier, null) //TODO: this is not correct in case of nested/anonymous classes
         }
     }
 
@@ -93,12 +91,10 @@ class FieldToPropertyProcessing(
                             val callExpr = parent.replace(generateSetterCall(qualifier, parent.rExpression ?: return null)) as PsiMethodCallExpression
                             return arrayOf(callExpr.methodExpression)
                         }
-                        else {
-                            val assignmentOpText = parent.operationSign.text
-                            assert(assignmentOpText.endsWith("="))
-                            val opText = assignmentOpText.substring(0, assignmentOpText.length - 1)
-                            return parent.replaceWithModificationCalls(qualifier, opText, parent.rExpression ?: return null)
-                        }
+                        val assignmentOpText = parent.operationSign.text
+                        assert(assignmentOpText.endsWith("="))
+                        val opText = assignmentOpText.substring(0, assignmentOpText.length - 1)
+                        return parent.replaceWithModificationCalls(qualifier, opText, parent.rExpression ?: return null)
                     }
                 }
 

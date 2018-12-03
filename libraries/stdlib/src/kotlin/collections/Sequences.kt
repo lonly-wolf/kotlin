@@ -272,13 +272,12 @@ constructor(
             while (itemIterator == null) {
                 if (!iterator.hasNext()) {
                     return false
-                } else {
-                    val element = iterator.next()
-                    val nextItemIterator = iterator(transformer(element))
-                    if (nextItemIterator.hasNext()) {
-                        itemIterator = nextItemIterator
-                        return true
-                    }
+                }
+                val element = iterator.next()
+                val nextItemIterator = iterator(transformer(element))
+                if (nextItemIterator.hasNext()) {
+                    itemIterator = nextItemIterator
+                    return true
                 }
             }
             return true

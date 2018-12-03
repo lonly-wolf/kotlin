@@ -50,10 +50,9 @@ class TypeArgumentsToParametersMapper {
             return TypeArgumentsMapping.TypeArgumentsMappingImpl(
                 listOf(WrongCountOfTypeArguments(descriptor, call.typeArguments.size)), emptyMap()
             )
-        } else {
-            val typeParameterToArgumentMap = descriptor.typeParameters.zip(call.typeArguments).associate { it }
-            return TypeArgumentsMapping.TypeArgumentsMappingImpl(listOf(), typeParameterToArgumentMap)
         }
+        val typeParameterToArgumentMap = descriptor.typeParameters.zip(call.typeArguments).associate { it }
+        return TypeArgumentsMapping.TypeArgumentsMappingImpl(listOf(), typeParameterToArgumentMap)
     }
 
 }

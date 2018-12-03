@@ -240,17 +240,15 @@ object KeywordCompletion {
 
                         return buildFilterWithContext(prefixText, prevParent, position)
                     }
-                    else {
-                        val lastExpression = prevParent
-                                .siblings(forward = false, withItself = false)
-                                .firstIsInstanceOrNull<KtExpression>()
-                        if (lastExpression != null) {
-                            val contextAfterExpression = lastExpression
-                                    .siblings(forward = true, withItself = false)
-                                    .takeWhile { it != prevParent }
-                                    .joinToString { it.text }
-                            return buildFilterWithContext(prefixText + "x" + contextAfterExpression, prevParent, position)
-                        }
+                    val lastExpression = prevParent
+                        .siblings(forward = false, withItself = false)
+                        .firstIsInstanceOrNull<KtExpression>()
+                    if (lastExpression != null) {
+                        val contextAfterExpression = lastExpression
+                            .siblings(forward = true, withItself = false)
+                            .takeWhile { it != prevParent }
+                            .joinToString { it.text }
+                        return buildFilterWithContext(prefixText + "x" + contextAfterExpression, prevParent, position)
                     }
                 }
 
@@ -445,9 +443,7 @@ object KeywordCompletion {
             }
             return languageVersionSettings.supportsFeature(feature)
         }
-        else {
-            return true
-        }
+        return true
     }
 
     private fun isModifierParentSupportedAtLanguageLevel(

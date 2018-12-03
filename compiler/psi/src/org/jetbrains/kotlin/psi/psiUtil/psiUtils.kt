@@ -443,17 +443,15 @@ fun ASTNode.parents() = generateSequence(treeParent) { node -> node.treeParent }
 fun ASTNode.siblings(forward: Boolean = true): Sequence<ASTNode> {
     if (forward) {
         return generateSequence(treeNext) { it.treeNext }
-    } else {
-        return generateSequence(treePrev) { it.treePrev }
     }
+    return generateSequence(treePrev) { it.treePrev }
 }
 
 fun ASTNode.leaves(forward: Boolean = true): Sequence<ASTNode> {
     if (forward) {
         return generateSequence(TreeUtil.nextLeaf(this)) { TreeUtil.nextLeaf(it) }
-    } else {
-        return generateSequence(TreeUtil.prevLeaf(this)) { TreeUtil.prevLeaf(it) }
     }
+    return generateSequence(TreeUtil.prevLeaf(this)) { TreeUtil.prevLeaf(it) }
 }
 
 fun ASTNode.closestPsiElement(): PsiElement? {

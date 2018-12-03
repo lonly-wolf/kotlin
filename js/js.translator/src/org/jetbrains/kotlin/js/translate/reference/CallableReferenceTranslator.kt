@@ -98,9 +98,7 @@ object CallableReferenceTranslator {
                 if (receiver != null) {
                     return if (descriptor.isExtension) ExplicitReceiverKind.EXTENSION_RECEIVER else ExplicitReceiverKind.DISPATCH_RECEIVER
                 }
-                else {
-                    return super.getExplicitReceiverKind()
-                }
+                return super.getExplicitReceiverKind()
             }
         }
 

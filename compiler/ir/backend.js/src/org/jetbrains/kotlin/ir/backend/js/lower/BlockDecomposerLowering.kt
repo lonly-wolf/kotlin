@@ -645,16 +645,15 @@ class BlockDecomposerTransformer(private val context: JsIrBackendContext) : IrEl
                         .transform(statementTransformer, null)  // deconstruct into `if-else` chain
 
                 return JsIrBuilder.buildComposite(expression.type, listOf(irVar, newWhen, JsIrBuilder.buildGetValue(irVar.symbol)))
-            } else {
-                val newBranches = decomposedResults.map { (branch, condition, result) ->
-                    when (branch) {
-                        is IrElseBranch -> IrElseBranchImpl(branch.startOffset, branch.endOffset, condition, result)
-                        else /* IrBranch */ -> IrBranchImpl(branch.startOffset, branch.endOffset, condition, result)
-                    }
-                }
-
-                return expression.run { IrWhenImpl(startOffset, endOffset, type, origin, newBranches) }
             }
+            val newBranches = decomposedResults.map { (branch, condition, result) ->
+                when (branch) {
+                    is IrElseBranch -> IrElseBranchImpl(branch.startOffset, branch.endOffset, condition, result)
+                    else /* IrBranch */ -> IrBranchImpl(branch.startOffset, branch.endOffset, condition, result)
+                }
+            }
+
+            return expression.run { IrWhenImpl(startOffset, endOffset, type, origin, newBranches) }
         }
     }
 }

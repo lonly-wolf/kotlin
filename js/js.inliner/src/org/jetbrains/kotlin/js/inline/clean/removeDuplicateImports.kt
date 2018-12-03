@@ -57,9 +57,7 @@ private fun removeDuplicateImports(
                     statements.removeAt(index)
                     continue
                 }
-                else {
-                    existingImports[importTag] = name
-                }
+                existingImports[importTag] = name
             }
         }
         else if (statement is JsBlock) {

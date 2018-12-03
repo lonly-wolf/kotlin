@@ -20,8 +20,7 @@ internal actual inline fun String.nativeLastIndexOf(ch: Char, fromIndex: Int): I
 public actual fun String.startsWith(prefix: String, ignoreCase: Boolean = false): Boolean {
     if (!ignoreCase)
         return nativeStartsWith(prefix, 0)
-    else
-        return regionMatches(0, prefix, 0, prefix.length, ignoreCase)
+    return regionMatches(0, prefix, 0, prefix.length, ignoreCase)
 }
 
 /**
@@ -31,8 +30,7 @@ public actual fun String.startsWith(prefix: String, ignoreCase: Boolean = false)
 public actual fun String.startsWith(prefix: String, startIndex: Int, ignoreCase: Boolean = false): Boolean {
     if (!ignoreCase)
         return nativeStartsWith(prefix, startIndex)
-    else
-        return regionMatches(startIndex, prefix, 0, prefix.length, ignoreCase)
+    return regionMatches(startIndex, prefix, 0, prefix.length, ignoreCase)
 }
 
 /**
@@ -42,8 +40,7 @@ public actual fun String.startsWith(prefix: String, startIndex: Int, ignoreCase:
 public actual fun String.endsWith(suffix: String, ignoreCase: Boolean = false): Boolean {
     if (!ignoreCase)
         return nativeEndsWith(suffix)
-    else
-        return regionMatches(length - suffix.length, suffix, 0, suffix.length, ignoreCase)
+    return regionMatches(length - suffix.length, suffix, 0, suffix.length, ignoreCase)
 }
 
 

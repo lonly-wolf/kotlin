@@ -28,9 +28,8 @@ public fun createTempDir(prefix: String = "tmp", suffix: String? = null, directo
     dir.delete()
     if (dir.mkdir()) {
         return dir
-    } else {
-        throw IOException("Unable to create temporary directory $dir.")
     }
+    throw IOException("Unable to create temporary directory $dir.")
 }
 
 /**

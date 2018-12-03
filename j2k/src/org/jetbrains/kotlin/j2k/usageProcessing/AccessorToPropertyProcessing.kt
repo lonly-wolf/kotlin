@@ -44,11 +44,9 @@ class AccessorToPropertyProcessing(val accessorMethod: PsiMethod, val accessorKi
                 if (arguments.isNotEmpty()) return null // incorrect call
                 return propertyAccess
             }
-            else {
-                if (arguments.size != 1) return null // incorrect call
-                val argument = codeConverter.convertExpression(arguments[0])
-                return AssignmentExpression(propertyAccess, argument, Operator.EQ)
-            }
+            if (arguments.size != 1) return null // incorrect call
+            val argument = codeConverter.convertExpression(arguments[0])
+            return AssignmentExpression(propertyAccess, argument, Operator.EQ)
         }
     }
 

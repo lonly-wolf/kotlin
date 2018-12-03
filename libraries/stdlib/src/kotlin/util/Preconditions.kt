@@ -65,9 +65,8 @@ public inline fun <T : Any> requireNotNull(value: T?, lazyMessage: () -> Any): T
     if (value == null) {
         val message = lazyMessage()
         throw IllegalArgumentException(message.toString())
-    } else {
-        return value
     }
+    return value
 }
 
 /**
@@ -128,9 +127,8 @@ public inline fun <T : Any> checkNotNull(value: T?, lazyMessage: () -> Any): T {
     if (value == null) {
         val message = lazyMessage()
         throw IllegalStateException(message.toString())
-    } else {
-        return value
     }
+    return value
 }
 
 

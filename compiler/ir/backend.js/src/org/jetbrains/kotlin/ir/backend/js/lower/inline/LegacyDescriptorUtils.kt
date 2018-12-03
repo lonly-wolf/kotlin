@@ -23,13 +23,12 @@ import org.jetbrains.kotlin.util.OperatorNameConventions
 internal fun <T : CallableMemberDescriptor> T.resolveFakeOverride(): T {
     if (this.kind.isReal) {
         return this
-    } else {
-        val overridden = OverridingUtil.getOverriddenDeclarations(this)
-        val filtered = OverridingUtil.filterOutOverridden(overridden)
-        // TODO: is it correct to take first?
-        @Suppress("UNCHECKED_CAST")
-        return filtered.first { it.modality != Modality.ABSTRACT } as T
     }
+    val overridden = OverridingUtil.getOverriddenDeclarations(this)
+    val filtered = OverridingUtil.filterOutOverridden(overridden)
+    // TODO: is it correct to take first?
+    @Suppress("UNCHECKED_CAST")
+    return filtered.first { it.modality != Modality.ABSTRACT } as T
 }
 
 internal val KotlinType.isKFunctionType: Boolean

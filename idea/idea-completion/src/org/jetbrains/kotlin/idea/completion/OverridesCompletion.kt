@@ -119,7 +119,8 @@ class OverridesCompletion(
                             return calcStartOffset(startOffset - 1, diff + 1)
                         } else if (context.document.text.substring(startOffset - override.length, startOffset) == override) {
                             return startOffset - override.length
-                        } else return diff + startOffset
+                        }
+                        return diff + startOffset
                     }
 
                     val startOffset = calcStartOffset(context.startOffset)

@@ -69,11 +69,10 @@ public abstract class Random {
                 v
             }
             return from + rnd
-        } else {
-            while (true) {
-                val rnd = nextInt()
-                if (rnd in from until until) return rnd
-            }
+        }
+        while (true) {
+            val rnd = nextInt()
+            if (rnd in from until until) return rnd
         }
     }
 
@@ -133,11 +132,10 @@ public abstract class Random {
                 rnd = v
             }
             return from + rnd
-        } else {
-            while (true) {
-                val rnd = nextLong()
-                if (rnd in from until until) return rnd
-            }
+        }
+        while (true) {
+            val rnd = nextLong()
+            if (rnd in from until until) return rnd
         }
     }
 

@@ -275,9 +275,8 @@ class DoubleColonExpressionResolver(
             return calleeAsDoubleColonLHS
         } else if (doubleColonExpression.hasQuestionMarks) {
             return resolveExpressionOnLHS(expression, c)
-        } else {
-            return null
         }
+        return null
     }
 
     private fun resolveReservedCallChainOnLHS(expression: KtExpression, c: ExpressionTypingContext): DoubleColonLHS.Expression? {

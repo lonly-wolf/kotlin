@@ -214,9 +214,8 @@ object NewCommonSuperTypeCalculator {
                 if (thereIsIn) {
                     // CS(Inv<out X>, Inv<in Y>) = Inv<*>
                     return StarProjectionImpl(parameter)
-                } else {
-                    asOut = true
                 }
+                asOut = true
             } else {
                 asOut = !thereIsIn
             }
@@ -230,12 +229,11 @@ object NewCommonSuperTypeCalculator {
                 Variance.OUT_VARIANCE,
                 type
             )
-        } else {
-            val type = intersectTypes(arguments.map { it.type.unwrap() })
-            return if (parameter.variance != Variance.INVARIANT) return type.asTypeProjection() else TypeProjectionImpl(
-                Variance.IN_VARIANCE,
-                type
-            )
         }
+        val type = intersectTypes(arguments.map { it.type.unwrap() })
+        return if (parameter.variance != Variance.INVARIANT) return type.asTypeProjection() else TypeProjectionImpl(
+            Variance.IN_VARIANCE,
+            type
+        )
     }
 }

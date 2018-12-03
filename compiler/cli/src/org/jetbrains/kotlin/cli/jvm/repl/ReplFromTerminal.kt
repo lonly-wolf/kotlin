@@ -153,10 +153,9 @@ class ReplFromTerminal(
                 writer.outputCompileError("Can not load script: ${e.message}")
             }
             return true
-        } else {
-            writer.printlnHelpMessage("Unknown command\n" + "Type :help for help")
-            return true
         }
+        writer.printlnHelpMessage("Unknown command\n" + "Type :help for help")
+        return true
     }
 
     companion object {

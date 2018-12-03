@@ -42,20 +42,18 @@ internal class InternalHashCodeMap<K, V>(override val equality: EqualityComparat
                 val entry: SimpleEntry<K, V> = chainOrEntry
                 if (equality.equals(entry.key, key)) {
                     return entry.setValue(value)
-                } else {
-                    backingMap[hashCode] = arrayOf(entry, SimpleEntry(key, value))
-                    size++
-                    return null
                 }
-            } else {
-                // Chain already exists, perhaps key also exists.
-                val chain: Array<MutableEntry<K, V>> = chainOrEntry
-                val entry = chain.findEntryInChain(key)
-                if (entry != null) {
-                    return entry.setValue(value)
-                }
-                chain.asDynamic().push(SimpleEntry(key, value))
+                backingMap[hashCode] = arrayOf(entry, SimpleEntry(key, value))
+                size++
+                return null
             }
+            // Chain already exists, perhaps key also exists.
+            val chain: Array<MutableEntry<K, V>> = chainOrEntry
+            val entry = chain.findEntryInChain(key)
+            if (entry != null) {
+                return entry.setValue(value)
+            }
+            chain.asDynamic().push(SimpleEntry(key, value))
         }
         size++
 //        structureChanged(host)
@@ -71,26 +69,24 @@ internal class InternalHashCodeMap<K, V>(override val equality: EqualityComparat
                 deleteProperty(backingMap, hashCode)
                 size--
                 return entry.value
-            } else {
-                return null
             }
-        } else {
-            val chain: Array<MutableEntry<K, V>> = chainOrEntry
-            for (index in chain.indices) {
-                val entry = chain[index]
-                if (equality.equals(key, entry.key)) {
-                    if (chain.size == 1) {
-                        chain.asDynamic().length = 0
-                        // remove the whole array
-                        deleteProperty(backingMap, hashCode)
-                    } else {
-                        // splice out the entry we're removing
-                        chain.asDynamic().splice(index, 1)
-                    }
-                    size--
-//                structureChanged(host)
-                    return entry.value
+            return null
+        }
+        val chain: Array<MutableEntry<K, V>> = chainOrEntry
+        for (index in chain.indices) {
+            val entry = chain[index]
+            if (equality.equals(key, entry.key)) {
+                if (chain.size == 1) {
+                    chain.asDynamic().length = 0
+                    // remove the whole array
+                    deleteProperty(backingMap, hashCode)
+                } else {
+                    // splice out the entry we're removing
+                    chain.asDynamic().splice(index, 1)
                 }
+                size--
+//                structureChanged(host)
+                return entry.value
             }
         }
         return null
@@ -111,13 +107,11 @@ internal class InternalHashCodeMap<K, V>(override val equality: EqualityComparat
             val entry: MutableEntry<K, V> = chainOrEntry
             if (equality.equals(entry.key, key)) {
                 return entry
-            } else {
-                return null
             }
-        } else {
-            val chain: Array<MutableEntry<K, V>> = chainOrEntry
-            return chain.findEntryInChain(key)
+            return null
         }
+        val chain: Array<MutableEntry<K, V>> = chainOrEntry
+        return chain.findEntryInChain(key)
     }
 
     private fun Array<MutableEntry<K, V>>.findEntryInChain(key: K): MutableEntry<K, V>? =
@@ -148,10 +142,9 @@ internal class InternalHashCodeMap<K, V>(override val equality: EqualityComparat
                     isChain = chainOrEntry is Array<*>
                     itemIndex = 0
                     return 0
-                } else {
-                    chainOrEntry = null
-                    return 1
                 }
+                chainOrEntry = null
+                return 1
             }
 
             override fun hasNext(): Boolean {

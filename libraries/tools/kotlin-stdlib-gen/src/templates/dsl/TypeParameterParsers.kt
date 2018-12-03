@@ -54,19 +54,18 @@ private fun parseArguments(typeParams: String): List<TypeArgument> {
         if (comma < 0) {
             params += parseTypeArgument(restParams)
             break
-        } else {
-            val open = restParams.indexOf('<')
-            val close = restParams.indexOf('>')
-            if (comma !in open..close) {
-                params += parseTypeArgument(restParams.take(comma))
-                restParams = restParams.drop(comma + 1)
-            }
-            else {
-                params += parseTypeArgument(restParams.take(close + 1))
-                val nextComma = restParams.indexOf(',', startIndex = close)
-                if (nextComma < 0) break
-                restParams = restParams.drop(nextComma + 1)
-            }
+        }
+        val open = restParams.indexOf('<')
+        val close = restParams.indexOf('>')
+        if (comma !in open..close) {
+            params += parseTypeArgument(restParams.take(comma))
+            restParams = restParams.drop(comma + 1)
+        }
+        else {
+            params += parseTypeArgument(restParams.take(close + 1))
+            val nextComma = restParams.indexOf(',', startIndex = close)
+            if (nextComma < 0) break
+            restParams = restParams.drop(nextComma + 1)
         }
     }
     return params

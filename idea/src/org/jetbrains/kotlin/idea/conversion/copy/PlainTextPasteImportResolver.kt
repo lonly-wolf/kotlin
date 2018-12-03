@@ -143,11 +143,9 @@ class PlainTextPasteImportResolver(val dataForConversion: DataForConversion, val
             }
 
             if (reference.resolve() != null) return true
-            else {
-                if (classes.isNotEmpty()) {
-                    ambiguityInResolution = true
-                    return false
-                }
+            if (classes.isNotEmpty()) {
+                ambiguityInResolution = true
+                return false
             }
 
             val members = (shortNameCache.getMethodsByName(referenceName, scope).asList() +
@@ -164,13 +162,11 @@ class PlainTextPasteImportResolver(val dataForConversion: DataForConversion, val
             }
 
             if (reference.resolve() != null) return false
+            if (members.isNotEmpty()) {
+                ambiguityInResolution = true
+            }
             else {
-                if (members.isNotEmpty()) {
-                    ambiguityInResolution = true
-                }
-                else {
-                    couldNotResolve = true
-                }
+                couldNotResolve = true
             }
             return false
         }

@@ -225,9 +225,8 @@ public actual open class LinkedHashMap<K, V> : HashMap<K, V>, MutableMap<K, V> {
             map.put(key, newEntry)
             newEntry.addToEnd()
             return null
-        } else {
-            return old.setValue(value)
         }
+        return old.setValue(value)
     }
 
     actual override fun remove(key: K): V? {

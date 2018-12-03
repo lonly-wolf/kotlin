@@ -65,17 +65,16 @@ class KtDotQualifiedExpression : KtExpressionImplStub<KotlinPlaceHolderStub<KtDo
                         "Stubs were created for:\n$text\nFile text:\n${containingFile.text}"
             )
             return null
-        } else {
-            val expressions = stub.getChildrenByType(INSIDE_DIRECTIVE_EXPRESSIONS, KtExpression.ARRAY_FACTORY)
-            if (expressions.size !in 1..2) {
-                LOG.error(
-                    "Invalid stub structure. DOT_QUALIFIED_EXPRESSION must have one or two children. Was: ${expressions.size}\n" +
-                            "File text:\n${containingFile.text}"
-                )
-                return null
-            }
-            return expressions
         }
+        val expressions = stub.getChildrenByType(INSIDE_DIRECTIVE_EXPRESSIONS, KtExpression.ARRAY_FACTORY)
+        if (expressions.size !in 1..2) {
+            LOG.error(
+                "Invalid stub structure. DOT_QUALIFIED_EXPRESSION must have one or two children. Was: ${expressions.size}\n" +
+                        "File text:\n${containingFile.text}"
+            )
+            return null
+        }
+        return expressions
     }
 
     companion object {

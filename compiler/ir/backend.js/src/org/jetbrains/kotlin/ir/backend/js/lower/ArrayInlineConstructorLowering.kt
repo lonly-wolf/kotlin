@@ -38,24 +38,23 @@ private class ArrayConstructorTransformer(
 
         if (expression.symbol == context.intrinsics.array.inlineConstructor) {
             return irCall(expression, context.intrinsics.jsArray)
-        } else {
-            primitiveArrayInlineToSizeConstructorMap[expression.symbol]?.let { sizeConstructor ->
-                return IrCallImpl(
+        }
+        primitiveArrayInlineToSizeConstructorMap[expression.symbol]?.let { sizeConstructor ->
+            return IrCallImpl(
+                expression.startOffset,
+                expression.endOffset,
+                expression.type,
+                context.intrinsics.jsFillArray
+            ).apply {
+                putValueArgument(0, IrCallImpl(
                     expression.startOffset,
                     expression.endOffset,
                     expression.type,
-                    context.intrinsics.jsFillArray
+                    sizeConstructor
                 ).apply {
-                    putValueArgument(0, IrCallImpl(
-                        expression.startOffset,
-                        expression.endOffset,
-                        expression.type,
-                        sizeConstructor
-                    ).apply {
-                        putValueArgument(0, expression.getValueArgument(0))
-                    })
-                    putValueArgument(1, expression.getValueArgument(1))
-                }
+                    putValueArgument(0, expression.getValueArgument(0))
+                })
+                putValueArgument(1, expression.getValueArgument(1))
             }
         }
 

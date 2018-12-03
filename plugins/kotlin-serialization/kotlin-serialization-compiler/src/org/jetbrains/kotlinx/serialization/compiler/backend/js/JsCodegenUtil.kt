@@ -145,30 +145,29 @@ internal fun SerializerJsTranslator.serializerInstance(
     }
     if (serializerClass.kind == ClassKind.OBJECT) {
         return context.serializerObjectGetter(serializerClass)
-    } else {
-        var args = if (serializerClass.classId == enumSerializerId || serializerClass.classId == contextSerializerId)
-            listOf(createGetKClassExpression(kType.toClassDescriptor!!))
-        else kType.arguments.map {
-            val argSer = findTypeSerializerOrContext(module, it.type, sourceElement = serializerClass.findPsi())
-            val expr = serializerInstance(argSer, module, it.type, it.type.genericIndex) ?: return null
-            if (it.type.isMarkedNullable) JsNew(nullableSerClass, listOf(expr)) else expr
-        }
-        if (serializerClass.classId == referenceArraySerializerId)
-            args = listOf(createGetKClassExpression(kType.arguments[0].type.toClassDescriptor!!)) + args
-        val serializable = getSerializableClassDescriptorBySerializer(serializerClass)
-        val ref = if (serializable?.declaredTypeParameters?.isNotEmpty() == true) {
-            val desc = requireNotNull(
-                KSerializerDescriptorResolver.findSerializerConstructorForTypeArgumentsSerializers(serializerClass)
-            ) { "Generated serializer does not have constructor with required number of arguments" }
-            if (!desc.isPrimary)
-                JsInvocation(context.getInnerReference(desc), args)
-            else
-                JsNew(context.getInnerReference(desc), args)
-        } else {
-            JsNew(context.translateQualifiedReference(serializerClass), args)
-        }
-        return ref
     }
+    var args = if (serializerClass.classId == enumSerializerId || serializerClass.classId == contextSerializerId)
+        listOf(createGetKClassExpression(kType.toClassDescriptor!!))
+    else kType.arguments.map {
+        val argSer = findTypeSerializerOrContext(module, it.type, sourceElement = serializerClass.findPsi())
+        val expr = serializerInstance(argSer, module, it.type, it.type.genericIndex) ?: return null
+        if (it.type.isMarkedNullable) JsNew(nullableSerClass, listOf(expr)) else expr
+    }
+    if (serializerClass.classId == referenceArraySerializerId)
+        args = listOf(createGetKClassExpression(kType.arguments[0].type.toClassDescriptor!!)) + args
+    val serializable = getSerializableClassDescriptorBySerializer(serializerClass)
+    val ref = if (serializable?.declaredTypeParameters?.isNotEmpty() == true) {
+        val desc = requireNotNull(
+            KSerializerDescriptorResolver.findSerializerConstructorForTypeArgumentsSerializers(serializerClass)
+        ) { "Generated serializer does not have constructor with required number of arguments" }
+        if (!desc.isPrimary)
+            JsInvocation(context.getInnerReference(desc), args)
+        else
+            JsNew(context.getInnerReference(desc), args)
+    } else {
+        JsNew(context.translateQualifiedReference(serializerClass), args)
+    }
+    return ref
 }
 
 internal fun SerializerJsTranslator.createGetKClassExpression(classDescriptor: ClassDescriptor): JsExpression =

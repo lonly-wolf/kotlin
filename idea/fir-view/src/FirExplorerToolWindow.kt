@@ -190,35 +190,34 @@ class FirExplorerToolWindow(private val project: Project, private val toolWindow
         override fun getChildren(): Array<SimpleNode> {
             if (data == null) {
                 return SimpleNode.NO_CHILDREN
-            } else {
-                val classOfData = data::class
-
-                val members = classOfData.getMemberProperties()
-
-                return members.filter {
-                    it.visibility == null || it.visibility!! <= KVisibility.PROTECTED
-                }.filter {
-                    it.instanceParameter != null
-                }.map {
-                    it.getter.isAccessible = true
-                    val value = it.getter.call(data)
-                    val notNullValueType = it.returnType.withNullability(false)
-
-                    val namePrefix = "${it.name}: ${it.returnType.renderSimple()} = "
-
-                    when {
-                        notNullValueType.isSubtypeOf(firElementType) -> {
-                            FirExplorerTreeNode(namePrefix, value as FirElement?, this)
-                        }
-                        notNullValueType.isSubtypeOf(listElementType) -> {
-                            FirExplorerTreeListNode(namePrefix, value as List<*>?, this)
-                        }
-                        else -> {
-                            FirExplorerTreeNode(namePrefix, value, this)
-                        }
-                    }
-                }.toTypedArray()
             }
+            val classOfData = data::class
+
+            val members = classOfData.getMemberProperties()
+
+            return members.filter {
+                it.visibility == null || it.visibility!! <= KVisibility.PROTECTED
+            }.filter {
+                it.instanceParameter != null
+            }.map {
+                it.getter.isAccessible = true
+                val value = it.getter.call(data)
+                val notNullValueType = it.returnType.withNullability(false)
+
+                val namePrefix = "${it.name}: ${it.returnType.renderSimple()} = "
+
+                when {
+                    notNullValueType.isSubtypeOf(firElementType) -> {
+                        FirExplorerTreeNode(namePrefix, value as FirElement?, this)
+                    }
+                    notNullValueType.isSubtypeOf(listElementType) -> {
+                        FirExplorerTreeListNode(namePrefix, value as List<*>?, this)
+                    }
+                    else -> {
+                        FirExplorerTreeNode(namePrefix, value, this)
+                    }
+                }
+            }.toTypedArray()
         }
 
         companion object {

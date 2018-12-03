@@ -90,9 +90,8 @@ internal fun noWhenBranchMatched(): Nothing = throw NoWhenBranchMatchedException
 internal fun subSequence(c: CharSequence, startIndex: Int, endIndex: Int): CharSequence {
     if (c is String) {
         return c.substring(startIndex, endIndex)
-    } else {
-        return c.asDynamic().`subSequence_vux9f0$`(startIndex, endIndex)
     }
+    return c.asDynamic().`subSequence_vux9f0$`(startIndex, endIndex)
 }
 
 @JsName("captureStack")
@@ -178,22 +177,21 @@ internal fun <T> primitiveArrayConcat(a: T, b: T): T {
     val args: Array<T> = js("arguments")
     if (a is Array<*> && a.asDynamic().`$type$` === undefined) {
         return concat(args)
-    } else {
-        var size = 0
-        for (i in args.indices) {
-            size += args[i].asDynamic().length as Int
-        }
-        val result = js("new a.constructor(size)")
-        kotlin.copyArrayType(a, result)
-        size = 0
-        for (i in args.indices) {
-            val arr = args[i].asDynamic()
-            for (j in 0 until arr.length) {
-                result[size++] = arr[j]
-            }
-        }
-        return result
     }
+    var size = 0
+    for (i in args.indices) {
+        size += args[i].asDynamic().length as Int
+    }
+    val result = js("new a.constructor(size)")
+    kotlin.copyArrayType(a, result)
+    size = 0
+    for (i in args.indices) {
+        val arr = args[i].asDynamic()
+        for (j in 0 until arr.length) {
+            result[size++] = arr[j]
+        }
+    }
+    return result
 }
 
 @JsName("booleanArrayOf")

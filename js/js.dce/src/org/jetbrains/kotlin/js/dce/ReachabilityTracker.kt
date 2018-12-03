@@ -81,9 +81,7 @@ class ReachabilityTracker(
             }
             return false
         }
-        else {
-            return true
-        }
+        return true
     }
 
     override fun visitInvocation(invocation: JsInvocation) {

@@ -253,9 +253,7 @@ private class PropertyDetector(
                 if (memberToPropertyInfo.containsKey(field)) { // field already in use by other property
                     continue
                 }
-                else {
-                    memberToPropertyInfo[field] = propertyInfo
-                }
+                memberToPropertyInfo[field] = propertyInfo
             }
 
             propertyInfo.getMethod?.let { memberToPropertyInfo[it] = propertyInfo }

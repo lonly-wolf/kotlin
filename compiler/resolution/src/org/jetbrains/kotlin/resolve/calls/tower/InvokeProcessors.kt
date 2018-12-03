@@ -232,21 +232,20 @@ fun <C : Candidate> createCallTowerProcessorForExplicitInvoke(
         } else {
             InvokeExtensionScopeTowerProcessor(functionContext, invokeExtensionDescriptor, explicitReceiver = explicitReceiver)
         }
-    } else {
-        val usualInvoke = ExplicitReceiverScopeTowerProcessor(
-            scopeTower,
-            functionContext,
-            expressionForInvoke
-        ) { getFunctions(OperatorNameConventions.INVOKE, it) } // todo operator
+    }
+    val usualInvoke = ExplicitReceiverScopeTowerProcessor(
+        scopeTower,
+        functionContext,
+        expressionForInvoke
+    ) { getFunctions(OperatorNameConventions.INVOKE, it) } // todo operator
 
-        return if (invokeExtensionDescriptor == null) {
-            usualInvoke
-        } else {
-            PrioritizedCompositeScopeTowerProcessor(
-                usualInvoke,
-                InvokeExtensionScopeTowerProcessor(functionContext, invokeExtensionDescriptor, explicitReceiver = null)
-            )
-        }
+    return if (invokeExtensionDescriptor == null) {
+        usualInvoke
+    } else {
+        PrioritizedCompositeScopeTowerProcessor(
+            usualInvoke,
+            InvokeExtensionScopeTowerProcessor(functionContext, invokeExtensionDescriptor, explicitReceiver = null)
+        )
     }
 
 }

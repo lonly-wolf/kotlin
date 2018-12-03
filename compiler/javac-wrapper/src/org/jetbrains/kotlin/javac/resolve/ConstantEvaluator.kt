@@ -280,7 +280,7 @@ class ConstantEvaluator(private val containingClass: JavaClass,
                 else -> null
             }
         }
-        else return null
+        return null
     }
 
 }

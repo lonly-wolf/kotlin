@@ -13,7 +13,6 @@ class DefaultAsserter : Asserter {
     override fun fail(message: String?): Nothing {
         if (message == null)
             throw AssertionError()
-        else
-            throw AssertionError(message)
+        throw AssertionError(message)
     }
 }

@@ -60,8 +60,7 @@ public actual fun String?.equals(other: String?, ignoreCase: Boolean = false): B
 public actual fun String.replace(oldChar: Char, newChar: Char, ignoreCase: Boolean = false): String {
     if (!ignoreCase)
         return (this as java.lang.String).replace(oldChar, newChar)
-    else
-        return splitToSequence(oldChar, ignoreCase = ignoreCase).joinToString(separator = newChar.toString())
+    return splitToSequence(oldChar, ignoreCase = ignoreCase).joinToString(separator = newChar.toString())
 }
 
 /**
@@ -195,8 +194,7 @@ public actual inline fun String.substring(startIndex: Int, endIndex: Int): Strin
 public actual fun String.startsWith(prefix: String, ignoreCase: Boolean = false): Boolean {
     if (!ignoreCase)
         return (this as java.lang.String).startsWith(prefix)
-    else
-        return regionMatches(0, prefix, 0, prefix.length, ignoreCase)
+    return regionMatches(0, prefix, 0, prefix.length, ignoreCase)
 }
 
 /**
@@ -206,8 +204,7 @@ public actual fun String.startsWith(prefix: String, ignoreCase: Boolean = false)
 public actual fun String.startsWith(prefix: String, startIndex: Int, ignoreCase: Boolean = false): Boolean {
     if (!ignoreCase)
         return (this as java.lang.String).startsWith(prefix, startIndex)
-    else
-        return regionMatches(startIndex, prefix, 0, prefix.length, ignoreCase)
+    return regionMatches(startIndex, prefix, 0, prefix.length, ignoreCase)
 }
 
 /**
@@ -217,8 +214,7 @@ public actual fun String.startsWith(prefix: String, startIndex: Int, ignoreCase:
 public actual fun String.endsWith(suffix: String, ignoreCase: Boolean = false): Boolean {
     if (!ignoreCase)
         return (this as java.lang.String).endsWith(suffix)
-    else
-        return regionMatches(length - suffix.length, suffix, 0, suffix.length, ignoreCase = true)
+    return regionMatches(length - suffix.length, suffix, 0, suffix.length, ignoreCase = true)
 }
 
 // "constructors" for String
@@ -324,8 +320,7 @@ public inline fun String.codePointCount(beginIndex: Int, endIndex: Int): Int =
 public actual fun String.compareTo(other: String, ignoreCase: Boolean = false): Int {
     if (ignoreCase)
         return (this as java.lang.String).compareToIgnoreCase(other)
-    else
-        return (this as java.lang.String).compareTo(other)
+    return (this as java.lang.String).compareTo(other)
 }
 
 /**
@@ -369,8 +364,7 @@ public inline fun String.offsetByCodePoints(index: Int, codePointOffset: Int): I
 public actual fun CharSequence.regionMatches(thisOffset: Int, other: CharSequence, otherOffset: Int, length: Int, ignoreCase: Boolean = false): Boolean {
     if (this is String && other is String)
         return this.regionMatches(thisOffset, other, otherOffset, length, ignoreCase)
-    else
-        return regionMatchesImpl(thisOffset, other, otherOffset, length, ignoreCase)
+    return regionMatchesImpl(thisOffset, other, otherOffset, length, ignoreCase)
 }
 
 /**

@@ -222,15 +222,14 @@ open class LazyDeclarationResolver @Deprecated("") constructor(
             topLevelDescriptorProvider.assertValid()
             val packageDescriptor = topLevelDescriptorProvider.getPackageFragmentOrDiagnoseFailure(fqName, ktFile)
             return packageDescriptor.getMemberScope()
-        } else {
-            return when (parentDeclaration) {
-                is KtClassOrObject -> getClassDescriptor(parentDeclaration, location).unsubstitutedMemberScope
-                is KtScript -> getScriptDescriptor(parentDeclaration, location).unsubstitutedMemberScope
-                else -> throw IllegalStateException(
-                    "Don't call this method for local declarations: " + declaration + "\n" +
-                            declaration.getElementTextWithContext()
-                )
-            }
+        }
+        return when (parentDeclaration) {
+            is KtClassOrObject -> getClassDescriptor(parentDeclaration, location).unsubstitutedMemberScope
+            is KtScript -> getScriptDescriptor(parentDeclaration, location).unsubstitutedMemberScope
+            else -> throw IllegalStateException(
+                "Don't call this method for local declarations: " + declaration + "\n" +
+                        declaration.getElementTextWithContext()
+            )
         }
     }
 }

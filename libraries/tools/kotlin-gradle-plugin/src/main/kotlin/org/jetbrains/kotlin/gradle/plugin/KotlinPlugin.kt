@@ -947,21 +947,20 @@ internal fun compareVersionNumbers(v1: String?, v2: String?): Int {
 
     if (part1.size == part2.size) {
         return 0
-    } else {
-        val left = part1.size > idx
-        val parts = if (left) part1 else part2
-
-        while (idx < parts.size) {
-            val p = parts[idx]
-            val cmp: Int
-            if (p.matches(digitsPattern)) {
-                cmp = Integer(p).compareTo(0)
-            } else {
-                cmp = 1
-            }
-            if (cmp != 0) return if (left) cmp else -cmp
-            idx++
-        }
-        return 0
     }
+    val left = part1.size > idx
+    val parts = if (left) part1 else part2
+
+    while (idx < parts.size) {
+        val p = parts[idx]
+        val cmp: Int
+        if (p.matches(digitsPattern)) {
+            cmp = Integer(p).compareTo(0)
+        } else {
+            cmp = 1
+        }
+        if (cmp != 0) return if (left) cmp else -cmp
+        idx++
+    }
+    return 0
 }

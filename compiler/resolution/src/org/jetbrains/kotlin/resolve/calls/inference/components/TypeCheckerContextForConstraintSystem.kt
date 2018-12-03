@@ -71,13 +71,12 @@ abstract class TypeCheckerContextForConstraintSystem : TypeCheckerContext(errorT
 
         if (subType.anyBound(this::isMyTypeVariable)) {
             return simplifyUpperConstraint(subType, superType) && (answer ?: true)
-        } else {
-            extractTypeVariableForSubtype(subType)?.let {
-                return simplifyUpperConstraint(it, superType) && (answer ?: true)
-            }
-
-            return simplifyConstraintForPossibleIntersectionSubType(subType, superType) ?: answer
         }
+        extractTypeVariableForSubtype(subType)?.let {
+            return simplifyUpperConstraint(it, superType) && (answer ?: true)
+        }
+
+        return simplifyConstraintForPossibleIntersectionSubType(subType, superType) ?: answer
     }
 
     // extract type variable only from type like Captured(out T)

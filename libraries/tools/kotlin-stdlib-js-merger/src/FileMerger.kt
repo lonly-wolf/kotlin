@@ -105,9 +105,7 @@ private fun List<JsStatement>.createInsertionPlace(): JsBlock {
                 ctx.replaceMe(block)
                 return false
             }
-            else {
-                return super.visit(x, ctx)
-            }
+            return super.visit(x, ctx)
         }
 
         private fun isInsertionPlace(expression: JsExpression): Boolean {

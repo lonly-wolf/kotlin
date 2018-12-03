@@ -52,9 +52,7 @@ fun <T : Any> deserializeFromPlainText(str: String, klass: KClass<T>): T? {
                 args.add(null)
                 continue
             }
-            else {
-                return null
-            }
+            return null
         }
 
         val argument: Any? = when (param.type.classifier) {

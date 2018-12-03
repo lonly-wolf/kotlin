@@ -772,14 +772,13 @@ class TypeResolver(
                             "should be equal to actual arguments number ${result.size}, (classifier: $classifierDescriptor)"
                 }
                 return Pair(result, null)
-            } else {
-                assert(restParameters.size == restArguments.size) {
-                    "Number of type of restParameters should be equal to ${restArguments.size}, " +
-                            "but ${restArguments.size} were found for $classifierDescriptor/$nextParameterOwner"
-                }
-
-                return Pair(result, restArguments)
             }
+            assert(restParameters.size == restArguments.size) {
+                "Number of type of restParameters should be equal to ${restArguments.size}, " +
+                        "but ${restArguments.size} were found for $classifierDescriptor/$nextParameterOwner"
+            }
+
+            return Pair(result, restArguments)
         }
 
         return Pair(result, null)

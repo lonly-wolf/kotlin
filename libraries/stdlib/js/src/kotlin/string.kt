@@ -98,9 +98,8 @@ public actual fun String.compareTo(other: String, ignoreCase: Boolean = false): 
             start = end
         }
         return n1 - n2
-    } else {
-        return compareTo(other)
     }
+    return compareTo(other)
 }
 
 

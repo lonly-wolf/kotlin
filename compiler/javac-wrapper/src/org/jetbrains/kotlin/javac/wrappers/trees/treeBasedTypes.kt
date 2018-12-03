@@ -146,22 +146,20 @@ sealed class TreeBasedClassifierType<out T : JCTree>(
                 val enclosingType = TreeBasedType.create(tree.selected, compilationUnit, javac, annotations, containingElement)
                 return (enclosingType as? JavaClassifierType)?.typeArguments ?: emptyList()
             }
-            else {
-                val classifier = classifier as? JavaClass ?: return emptyList()
-                if (classifier is MockKotlinClassifier || classifier.isStatic) return emptyList()
+            val classifier = classifier as? JavaClass ?: return emptyList()
+            if (classifier is MockKotlinClassifier || classifier.isStatic) return emptyList()
 
-                return arrayListOf<JavaClass>().apply {
-                    var outer = classifier.outerClass
-                    var staticType = false
-                    while (outer != null && !staticType) {
-                        if (outer.isStatic) {
-                            staticType = true
-                        }
-                        add(outer)
-                        outer = outer.outerClass
+            return arrayListOf<JavaClass>().apply {
+                var outer = classifier.outerClass
+                var staticType = false
+                while (outer != null && !staticType) {
+                    if (outer.isStatic) {
+                        staticType = true
                     }
-                }.flatMap { it.typeParameters.map(::TreeBasedTypeParameterType) }
-            }
+                    add(outer)
+                    outer = outer.outerClass
+                }
+            }.flatMap { it.typeParameters.map(::TreeBasedTypeParameterType) }
         }
 
 }

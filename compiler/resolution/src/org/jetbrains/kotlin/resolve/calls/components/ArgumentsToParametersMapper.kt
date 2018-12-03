@@ -47,17 +47,16 @@ class ArgumentsToParametersMapper {
         // optimization for case of variable
         if (argumentsInParenthesis.isEmpty() && externalArgument == null && descriptor.valueParameters.isEmpty()) {
             return EmptyArgumentMapping
-        } else {
-            val processor = CallArgumentProcessor(descriptor)
-            processor.processArgumentsInParenthesis(argumentsInParenthesis)
-
-            if (externalArgument != null) {
-                processor.processExternalArgument(externalArgument)
-            }
-            processor.processDefaultsAndRunChecks()
-
-            return ArgumentMapping(processor.result, processor.getDiagnostics())
         }
+        val processor = CallArgumentProcessor(descriptor)
+        processor.processArgumentsInParenthesis(argumentsInParenthesis)
+
+        if (externalArgument != null) {
+            processor.processExternalArgument(externalArgument)
+        }
+        processor.processDefaultsAndRunChecks()
+
+        return ArgumentMapping(processor.result, processor.getDiagnostics())
     }
 
     private class CallArgumentProcessor(val descriptor: CallableDescriptor) {
@@ -127,10 +126,8 @@ class ArgumentsToParametersMapper {
                 return false
             }
             // all position arguments will be mapped to current vararg parameter
-            else {
-                addVarargArgument(argument)
-                return true
-            }
+            addVarargArgument(argument)
+            return true
         }
 
         private fun processNamedArgument(argument: KotlinCallArgument, name: Name) {
@@ -234,10 +231,9 @@ class ArgumentsToParametersMapper {
                 if (!parameter.isVararg) {
                     if (resolvedArgument !is ResolvedCallArgument.SimpleArgument) {
                         error("Incorrect resolved argument for parameter $parameter :$resolvedArgument")
-                    } else {
-                        if (resolvedArgument.callArgument.isSpread) {
-                            addDiagnostic(NonVarargSpread(resolvedArgument.callArgument))
-                        }
+                    }
+                    if (resolvedArgument.callArgument.isSpread) {
+                        addDiagnostic(NonVarargSpread(resolvedArgument.callArgument))
                     }
                 }
             }

@@ -341,108 +341,106 @@ class Converter private constructor(
             return EnumConstant(name, annotations, modifiers, params, body)
                     .assignPrototype(field, CommentsAndSpacesInheritance.LINE_BREAKS)
         }
-        else {
-            val setterParameter = setMethod?.parameterList?.parameters?.single()
-            val nullability = combinedNullability(field, getMethod, setterParameter)
-            val mutability = combinedMutability(field, getMethod, setterParameter)
+        val setterParameter = setMethod?.parameterList?.parameters?.single()
+        val nullability = combinedNullability(field, getMethod, setterParameter)
+        val mutability = combinedMutability(field, getMethod, setterParameter)
 
-            val propertyType = typeConverter.convertType(propertyInfo.psiType, nullability, mutability)
+        val propertyType = typeConverter.convertType(propertyInfo.psiType, nullability, mutability)
 
-            val shouldDeclareType = settings.specifyFieldTypeByDefault
-                                    || field == null
-                                    || shouldDeclareVariableType(field, propertyType, !propertyInfo.isVar && modifiers.isPrivate)
+        val shouldDeclareType = settings.specifyFieldTypeByDefault
+                || field == null
+                || shouldDeclareVariableType(field, propertyType, !propertyInfo.isVar && modifiers.isPrivate)
 
-            //TODO: usage processings for converting method's to property
-            if (field != null) {
-                addUsageProcessing(FieldToPropertyProcessing(field, propertyInfo.name, propertyType.isNullable,
-                                                             replaceReadWithFieldReference = propertyInfo.getMethod != null && !propertyInfo.isGetMethodBodyFieldAccess,
-                                                             replaceWriteWithFieldReference = propertyInfo.setMethod != null && !propertyInfo.isSetMethodBodyFieldAccess))
-            }
-
-            //TODO: doc-comments
-
-            var getter: PropertyAccessor? = null
-            if (propertyInfo.needExplicitGetter) {
-                if (getMethod != null) {
-                    val method = convertMethod(getMethod, null, null, null, classKind)!!
-                    getter = if (method.modifiers.contains(Modifier.EXTERNAL))
-                        PropertyAccessor(AccessorKind.GETTER, method.annotations, Modifiers(listOf(Modifier.EXTERNAL)).assignNoPrototype(), null, null)
-                    else
-                        PropertyAccessor(AccessorKind.GETTER, method.annotations, Modifiers.Empty, method.parameterList, method.body)
-                    getter.assignPrototype(getMethod, CommentsAndSpacesInheritance.NO_SPACES)
-                }
-                else if (propertyInfo.modifiers.contains(Modifier.OVERRIDE) && !(propertyInfo.superInfo?.isAbstract() ?: false)) {
-                    val superExpression = SuperExpression(Identifier.Empty).assignNoPrototype()
-                    val superAccess = QualifiedExpression(superExpression, propertyInfo.identifier, null).assignNoPrototype()
-                    val returnStatement = ReturnStatement(superAccess).assignNoPrototype()
-                    val body = Block.of(returnStatement).assignNoPrototype()
-                    val parameterList = ParameterList.withNoPrototype(emptyList())
-                    getter = PropertyAccessor(AccessorKind.GETTER, Annotations.Empty, Modifiers.Empty, parameterList, deferredElement { body })
-                    getter.assignNoPrototype()
-                }
-                else {
-                    //TODO: what else?
-                    getter = PropertyAccessor(AccessorKind.GETTER, Annotations.Empty, Modifiers.Empty, null, null).assignNoPrototype()
-                }
-            }
-
-            var setter: PropertyAccessor? = null
-            if (propertyInfo.needExplicitSetter) {
-                val accessorModifiers = Modifiers(listOfNotNull(propertyInfo.specialSetterAccess)).assignNoPrototype()
-                if (setMethod != null && !propertyInfo.isSetMethodBodyFieldAccess) {
-                    val method = convertMethod(setMethod, null, null, null, classKind)!!
-                    setter = if (method.modifiers.contains(Modifier.EXTERNAL))
-                        PropertyAccessor(AccessorKind.SETTER, method.annotations, accessorModifiers.with(Modifier.EXTERNAL), null, null)
-                    else {
-                        val convertedParameter = method.parameterList!!.parameters.single() as FunctionParameter
-                        val parameterAnnotations = convertedParameter.annotations
-                        val parameterList = if (method.body != null || !parameterAnnotations.isEmpty) {
-                            val parameter = FunctionParameter(convertedParameter.identifier, null, FunctionParameter.VarValModifier.None, parameterAnnotations, Modifiers.Empty)
-                                    .assignPrototypesFrom(convertedParameter, CommentsAndSpacesInheritance.NO_SPACES)
-                            ParameterList.withNoPrototype(listOf(parameter))
-                        }
-                        else {
-                            null
-                        }
-                        PropertyAccessor(AccessorKind.SETTER, method.annotations, accessorModifiers, parameterList, method.body)
-                    }
-                    setter.assignPrototype(setMethod, CommentsAndSpacesInheritance.NO_SPACES)
-                }
-                else if (propertyInfo.modifiers.contains(Modifier.OVERRIDE) && !(propertyInfo.superInfo?.isAbstract() ?: false)) {
-                    val superExpression = SuperExpression(Identifier.Empty).assignNoPrototype()
-                    val superAccess = QualifiedExpression(superExpression, propertyInfo.identifier, null).assignNoPrototype()
-                    val valueIdentifier = Identifier.withNoPrototype("value", isNullable = false)
-                    val assignment = AssignmentExpression(superAccess, valueIdentifier, Operator.EQ).assignNoPrototype()
-                    val body = Block.of(assignment).assignNoPrototype()
-                    val parameter = FunctionParameter(valueIdentifier, propertyType, FunctionParameter.VarValModifier.None, Annotations.Empty, Modifiers.Empty).assignNoPrototype()
-                    val parameterList = ParameterList.withNoPrototype(listOf(parameter))
-                    setter = PropertyAccessor(AccessorKind.SETTER, Annotations.Empty, accessorModifiers, parameterList, deferredElement { body })
-                    setter.assignNoPrototype()
-                }
-                else {
-                    setter = PropertyAccessor(AccessorKind.SETTER, Annotations.Empty, accessorModifiers, null, null).assignNoPrototype()
-                }
-            }
-
-            val needInitializer = field != null && shouldGenerateDefaultInitializer(referenceSearcher, field)
-            val property = Property(name,
-                                    annotations,
-                                    modifiers,
-                                    propertyInfo.isVar,
-                                    propertyType,
-                                    shouldDeclareType,
-                                    deferredElement { codeConverter -> field?.let { codeConverter.convertExpression(it.initializer, it.type) } ?: Expression.Empty },
-                                    needInitializer,
-                                    getter,
-                                    setter,
-                                    classKind == ClassKind.INTERFACE
-            )
-
-            val placementElement = field ?: getMethod ?: setMethod
-            val prototypes = listOfNotNull<PsiElement>(field, getMethod, setMethod)
-                    .map { PrototypeInfo(it, if (it == placementElement) CommentsAndSpacesInheritance.LINE_BREAKS else CommentsAndSpacesInheritance.NO_SPACES) }
-            return property.assignPrototypes(*prototypes.toTypedArray())
+        //TODO: usage processings for converting method's to property
+        if (field != null) {
+            addUsageProcessing(FieldToPropertyProcessing(field, propertyInfo.name, propertyType.isNullable,
+                                                         replaceReadWithFieldReference = propertyInfo.getMethod != null && !propertyInfo.isGetMethodBodyFieldAccess,
+                                                         replaceWriteWithFieldReference = propertyInfo.setMethod != null && !propertyInfo.isSetMethodBodyFieldAccess))
         }
+
+        //TODO: doc-comments
+
+        var getter: PropertyAccessor? = null
+        if (propertyInfo.needExplicitGetter) {
+            if (getMethod != null) {
+                val method = convertMethod(getMethod, null, null, null, classKind)!!
+                getter = if (method.modifiers.contains(Modifier.EXTERNAL))
+                    PropertyAccessor(AccessorKind.GETTER, method.annotations, Modifiers(listOf(Modifier.EXTERNAL)).assignNoPrototype(), null, null)
+                else
+                    PropertyAccessor(AccessorKind.GETTER, method.annotations, Modifiers.Empty, method.parameterList, method.body)
+                getter.assignPrototype(getMethod, CommentsAndSpacesInheritance.NO_SPACES)
+            }
+            else if (propertyInfo.modifiers.contains(Modifier.OVERRIDE) && !(propertyInfo.superInfo?.isAbstract() ?: false)) {
+                val superExpression = SuperExpression(Identifier.Empty).assignNoPrototype()
+                val superAccess = QualifiedExpression(superExpression, propertyInfo.identifier, null).assignNoPrototype()
+                val returnStatement = ReturnStatement(superAccess).assignNoPrototype()
+                val body = Block.of(returnStatement).assignNoPrototype()
+                val parameterList = ParameterList.withNoPrototype(emptyList())
+                getter = PropertyAccessor(AccessorKind.GETTER, Annotations.Empty, Modifiers.Empty, parameterList, deferredElement { body })
+                getter.assignNoPrototype()
+            }
+            else {
+                //TODO: what else?
+                getter = PropertyAccessor(AccessorKind.GETTER, Annotations.Empty, Modifiers.Empty, null, null).assignNoPrototype()
+            }
+        }
+
+        var setter: PropertyAccessor? = null
+        if (propertyInfo.needExplicitSetter) {
+            val accessorModifiers = Modifiers(listOfNotNull(propertyInfo.specialSetterAccess)).assignNoPrototype()
+            if (setMethod != null && !propertyInfo.isSetMethodBodyFieldAccess) {
+                val method = convertMethod(setMethod, null, null, null, classKind)!!
+                setter = if (method.modifiers.contains(Modifier.EXTERNAL))
+                    PropertyAccessor(AccessorKind.SETTER, method.annotations, accessorModifiers.with(Modifier.EXTERNAL), null, null)
+                else {
+                    val convertedParameter = method.parameterList!!.parameters.single() as FunctionParameter
+                    val parameterAnnotations = convertedParameter.annotations
+                    val parameterList = if (method.body != null || !parameterAnnotations.isEmpty) {
+                        val parameter = FunctionParameter(convertedParameter.identifier, null, FunctionParameter.VarValModifier.None, parameterAnnotations, Modifiers.Empty)
+                            .assignPrototypesFrom(convertedParameter, CommentsAndSpacesInheritance.NO_SPACES)
+                        ParameterList.withNoPrototype(listOf(parameter))
+                    }
+                    else {
+                        null
+                    }
+                    PropertyAccessor(AccessorKind.SETTER, method.annotations, accessorModifiers, parameterList, method.body)
+                }
+                setter.assignPrototype(setMethod, CommentsAndSpacesInheritance.NO_SPACES)
+            }
+            else if (propertyInfo.modifiers.contains(Modifier.OVERRIDE) && !(propertyInfo.superInfo?.isAbstract() ?: false)) {
+                val superExpression = SuperExpression(Identifier.Empty).assignNoPrototype()
+                val superAccess = QualifiedExpression(superExpression, propertyInfo.identifier, null).assignNoPrototype()
+                val valueIdentifier = Identifier.withNoPrototype("value", isNullable = false)
+                val assignment = AssignmentExpression(superAccess, valueIdentifier, Operator.EQ).assignNoPrototype()
+                val body = Block.of(assignment).assignNoPrototype()
+                val parameter = FunctionParameter(valueIdentifier, propertyType, FunctionParameter.VarValModifier.None, Annotations.Empty, Modifiers.Empty).assignNoPrototype()
+                val parameterList = ParameterList.withNoPrototype(listOf(parameter))
+                setter = PropertyAccessor(AccessorKind.SETTER, Annotations.Empty, accessorModifiers, parameterList, deferredElement { body })
+                setter.assignNoPrototype()
+            }
+            else {
+                setter = PropertyAccessor(AccessorKind.SETTER, Annotations.Empty, accessorModifiers, null, null).assignNoPrototype()
+            }
+        }
+
+        val needInitializer = field != null && shouldGenerateDefaultInitializer(referenceSearcher, field)
+        val property = Property(name,
+                                annotations,
+                                modifiers,
+                                propertyInfo.isVar,
+                                propertyType,
+                                shouldDeclareType,
+                                deferredElement { codeConverter -> field?.let { codeConverter.convertExpression(it.initializer, it.type) } ?: Expression.Empty },
+                                needInitializer,
+                                getter,
+                                setter,
+                                classKind == ClassKind.INTERFACE
+        )
+
+        val placementElement = field ?: getMethod ?: setMethod
+        val prototypes = listOfNotNull<PsiElement>(field, getMethod, setMethod)
+            .map { PrototypeInfo(it, if (it == placementElement) CommentsAndSpacesInheritance.LINE_BREAKS else CommentsAndSpacesInheritance.NO_SPACES) }
+        return property.assignPrototypes(*prototypes.toTypedArray())
     }
 
 

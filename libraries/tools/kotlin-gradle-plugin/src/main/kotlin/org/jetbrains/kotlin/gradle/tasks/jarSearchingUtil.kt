@@ -156,9 +156,8 @@ private fun findPotentialModuleJars(project: Project, moduleId: String): Iterabl
 
         if (compilerEmbeddable != null) {
             return compilerEmbeddable.moduleArtifacts.map { it.file }
-        } else {
-            allFiles.addAll(configuration.files)
         }
+        allFiles.addAll(configuration.files)
     }
 
     return allFiles
